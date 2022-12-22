@@ -1,0 +1,5 @@
+border-fixed: A5FFCA
+border-dynamic:
+tile-background: A5FFCA
+path-background: FFBC96
+path-border: 000000

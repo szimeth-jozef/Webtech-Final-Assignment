@@ -1,0 +1,35 @@
+Worth 10 points
+[ ] PWA compatible
+
+Worth 10 points
+[ ] Use of drag and drop
+[ ] Must be responsive (obviously)
+
+Worth 10 points
+- Overall functionality
+[ ] At least 5 game levels
+[ ] At least 2 difficulties
+
+Worth 7 points
+[ ] Use of a mobile sensor
+
+Worth 7 points
+- Idea
+- Graphics, Design
+[ ] Add favicon
+[ ] Come up with a name for the game
+
+Worth 6 points
+[ ] Game levels and difficulties must be stored in json or xml
+
+Worth 6 points
+[ ] Game must be playable repeatedly
+[ ] Progress of the player must be stored (cached)
+[ ] Game levels must be served in random order (but keeping the same difficulty)
+[ ] Hints must be always available
+[ ] Player is able to end the game and see the rigth answers/solutions
+
+Worth 4 points
+[ ] Description of the game
+[ ] Guide how to play the game (with parts that are available only on mobile devices)
+[ ] Guide must be printable
