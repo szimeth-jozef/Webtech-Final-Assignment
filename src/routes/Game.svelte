@@ -37,8 +37,81 @@
 
             image.onerror = () => reject(`Couldn't load sprite-sheet from [${url}]`)
             image.src = url
+        })
+    }
 
+    function startGame() {
+        window.addEventListener("deviceorientation", event => {
+            const pitch = event.beta
+            const roll = event.gamma
 
+            const treshhold = 30
+
+            if (pitch > treshhold + 30) {
+                // Simulate a "up" arrow key press
+                const event = new KeyboardEvent("keydown", {
+                    bubbles: true, cancelable: true, code: "ArrowDown"
+                })
+                document.dispatchEvent(event)
+            }
+            else if (pitch < -treshhold + 30) {
+                // Simulate a "down" arrow key press
+                const event = new KeyboardEvent("keydown", {
+                    bubbles: true, cancelable: true, code: "ArrowUp"
+                });
+                document.dispatchEvent(event);
+            }
+            else if (roll > treshhold) {
+                // Simulate a "right" arrow key press
+                const event = new KeyboardEvent("keydown", {
+                    bubbles: true, cancelable: true, code: "ArrowRight"
+                });
+                document.dispatchEvent(event);
+            }
+            else if (roll < -treshhold) {
+                // Simulate a "left" arrow key press
+                const event = new KeyboardEvent("keydown", {
+                    bubbles: true, cancelable: true, code: "ArrowLeft"
+                });
+                document.dispatchEvent(event);
+            }
+            else {
+                // Experimental "tilt" released event
+                const event = new KeyboardEvent("keyup", {
+                    bubbles: true, cancelable: true, code: "NeutralTilt"
+                });
+                document.dispatchEvent(event);
+            }
+        });
+
+        window.addEventListener("keydown", event => {
+            switch (event.code) {
+                case "ArrowUp":
+                    document.getElementById("controls").innerText = "UP"
+                    break
+                case "ArrowDown":
+                    document.getElementById("controls").innerText = "DOWN"
+                    break
+                case "ArrowRight":
+                    document.getElementById("controls").innerText = "RIGHT"
+                    break
+                case "ArrowLeft":
+                    document.getElementById("controls").innerText = "LEFT"
+                    break
+            }
+            event.preventDefault()
+        })
+
+        window.addEventListener("keyup", event => {
+            if (event.code === "NeutralTilt" ||
+                event.code === "ArrowUp" ||
+                event.code === "ArrowDown" ||
+                event.code === "ArrowRight" ||
+                event.code === "ArrowLeft") {
+                document.getElementById("controls").innerText = "None"
+            }
+
+            event.preventDefault()
         })
     }
 
@@ -66,6 +139,7 @@
                 grid.appendChild(canvas)
             })
         }))
+        startGame()
     })
     .catch(err => {
         loading = false
@@ -82,7 +156,8 @@
     {/if}
 
     <h1>Lets rooooock on {params.difficulty}!</h1>
-<!--    <div id="spritesheet"></div>-->
+    <h2 id="controls">None</h2>
+    <!--<div id="spritesheet"></div>-->
     <div id="grid"></div>
 </main>
 
