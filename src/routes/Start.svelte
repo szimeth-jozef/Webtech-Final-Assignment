@@ -15,11 +15,33 @@
 
   let selected: Difficulty
 
+  async function lockScreenToPortrait() {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen()
+    }
+    return await screen.orientation.lock("portrait")
+  }
+
+  function startGame() {
+    lockScreenToPortrait()
+      .then(() => {
+          console.log("Screen locked to portrait.")
+          document.getElementById("screen-lock").innerText = "Screen locked to portrait."
+          push(`/game/${selected.id}`)
+        })
+      .catch(err => {
+        console.error(`Failed locking the screen to portrait: ${err}`)
+        document.getElementById("screen-lock").innerText = `Failed locking the screen to portrait: ${err}`
+      })
+  }
+
 </script>
 
 <main>
   <h1>Welcome, gamer. Select what you wanna do next...</h1>
-  <button on:click={() => push(`/game/${selected.id}`)}>Start Easy</button>
+  <h2 id="is-fullscreen">x</h2>
+  <h2 id="screen-lock">x</h2>
+  <button on:click={startGame}>Začat novú hru</button>
 
   <select bind:value={selected}>
     {#each difficulties as difficulty}
