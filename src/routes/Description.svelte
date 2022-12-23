@@ -1,0 +1,3 @@
+<main>
+    So, this game is about not shitting all over your brand new gucci pants 💩👖...
+</main>
