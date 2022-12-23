@@ -1,18 +1,55 @@
 [
     {
-        "board": 1232,
-        "solution": "Yaheee"
-    },
-    {
-        "board": 4324,
-        "solution": "Hello"
-    },
-    {
-        "board": 234,
-        "solution": "Sayonara"
-    },
-    {
-        "board": 4564,
-        "solution": "Mask off"
+        "name": "level1",
+        "board": [
+            [
+                {"tile": {"x": 0,"y": 0}, "orientation": 90},
+                {"tile": {"x": 0,"y": 0}, "orientation": 180},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 270},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0}
+            ],
+            [
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0}
+            ],
+            [
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0}
+            ],
+            [
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0}
+            ],
+            [
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0}
+            ],
+            [
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0},
+                {"tile": {"x": 0,"y": 0}, "orientation": 0}
+            ]
+        ]
     }
 ]

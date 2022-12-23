@@ -3,6 +3,10 @@
 
     export let params: GamePropType
 
+    const SPRITE_WIDTH = 60;
+    const SPRITE_HEIGHT = 60;
+
+
     let loading = true
 
     async function fetchLevels(difficulty:string) {
@@ -16,6 +20,10 @@
         return Promise.reject(response.statusText)
     }
 
+    function spritePositionToImagePosition(coord) {
+        return {x: (coord.x * SPRITE_WIDTH), y: (coord.y *SPRITE_HEIGHT)}
+    }
+
     function fetchSpriteSheet(url: string): Promise<HTMLImageElement> {
         return new Promise((resolve, reject) => {
             const image = new Image()
@@ -26,8 +34,11 @@
             //     resolve(image)
             // }, 5000)
             // ====================================
+
             image.onerror = () => reject(`Couldn't load sprite-sheet from [${url}]`)
             image.src = url
+
+
         })
     }
 
@@ -37,8 +48,24 @@
     ])
     .then(([levelsJsonData, spriteSheetImage]) => {
         loading = false
-        // console.log(levelsJsonData)
-        document.getElementById("spritesheet").appendChild(spriteSheetImage)
+        // document.getElementById("spritesheet").appendChild(spriteSheetImage)
+         //console.log(levelsJsonData)
+         //console.log(levelsJsonData[0].board)
+        let grid=document.getElementById("grid");
+        grid.style.maxWidth=(levelsJsonData[0].board.length*150).toString()+"px"
+        levelsJsonData[0].board.forEach((line=>{ //TODO levelsJsonData[0] <<== robene len pre prvy level
+            line.forEach((tileData)=>{
+                let canvas=document.createElement("canvas");
+                canvas.width=150
+                canvas.height=150
+
+                canvas.style.transform="rotate("+tileData.orientation+"deg)";
+                let pos=spritePositionToImagePosition(tileData.tile)
+                canvas.getContext("2d").drawImage(spriteSheetImage,pos.x,pos.y,SPRITE_WIDTH,SPRITE_HEIGHT,0,0,150,150)
+
+                grid.appendChild(canvas)
+            })
+        }))
     })
     .catch(err => {
         loading = false
@@ -47,7 +74,7 @@
 
 </script>
 
-<main>
+<main style="width: 1500px">
     {#if loading}
         <div class="loader-container">
             <div class="loader"></div>
@@ -55,10 +82,23 @@
     {/if}
 
     <h1>Lets rooooock on {params.difficulty}!</h1>
-    <div id="spritesheet"></div>
+<!--    <div id="spritesheet"></div>-->
+    <div id="grid"></div>
 </main>
 
 <style>
+    #grid{
+        margin:auto;
+        display: grid;
+        grid-gap: 0px;
+        grid-template-columns: repeat(6,auto);
+        grid-template-rows: repeat(6,auto);
+        grid-auto-flow: row;
+    }
+
+
+
+
     .loader {
         position: absolute;
         top: 40%;
