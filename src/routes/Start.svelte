@@ -2,12 +2,33 @@
   import svelteLogo from '../assets/svelte.svg'
   import Counter from '../lib/Counter.svelte'
   import { push } from 'svelte-spa-router'
+
+  interface Difficulty {
+    id: string,
+    text: string
+  }
+
+  const difficulties: Array<Difficulty> = [
+    { id:"easy", text: "Ľahká" },
+    { id:"hard", text: "Ťažká" }
+  ]
+
+  let selected: Difficulty
+
 </script>
 
 <main>
   <h1>Welcome, gamer. Select what you wanna do next...</h1>
-  <button on:click={() => push("/game/easy")}>Start Easy</button>
-  <button on:click={() => push("/game/hard")}>Start Hard</button>
+  <button on:click={() => push(`/game/${selected.id}`)}>Start Easy</button>
+
+  <select bind:value={selected}>
+    {#each difficulties as difficulty}
+      <option value={difficulty}>
+        {difficulty.text}
+      </option>
+    {/each}
+  </select>
+
   <button on:click={() => push("/description")}>Popis hry</button>
 
   <div>
@@ -39,12 +60,15 @@
     padding: 1.5em;
     will-change: filter;
   }
+
   .logo:hover {
     filter: drop-shadow(0 0 2em #646cffaa);
   }
+
   .logo.svelte:hover {
     filter: drop-shadow(0 0 2em #ff3e00aa);
   }
+
   .read-the-docs {
     color: #888;
   }
