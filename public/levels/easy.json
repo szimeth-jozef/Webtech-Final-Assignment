@@ -1,18 +1,74 @@
 [
     {
-        "board": 1232,
-        "solution": "Yaheee"
-    },
-    {
-        "board": 4324,
-        "solution": "Hello"
-    },
-    {
-        "board": 234,
-        "solution": "Sayonara"
-    },
-    {
-        "board": 4564,
-        "solution": "Mask off"
+        "name": "level1",
+        "board": [
+            [
+                { "tile": "start", "orientation": 90, "type": "fixed" },
+                { "tile": "boulder", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" }
+            ],
+            [
+                { "tile": "straight", "orientation": 0, "type": "fixed" },
+                { "tile": "straight", "orientation": 90, "type": "fixed"},
+                {
+                    "tile": "none",
+                    "orientation": 0,
+                    "type": "empty",
+                    "solution": { "tile": "corner", "orientation": 0 }
+                },
+                { "tile": "straight", "orientation": 90, "type": "fixed" },
+                { "tile": "corner", "orientation": 180, "type": "fixed" },
+                {
+                    "tile": "none",
+                    "orientation": 0,
+                    "type": "empty",
+                    "solution": { "tile": "straight", "orientation": 0 }
+                }
+            ],
+            [
+                { "tile": "start", "orientation": 90, "type": "fixed" },
+                { "tile": "boulder", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" }
+            ],
+            [
+                { "tile": "start", "orientation": 90, "type": "fixed" },
+                { "tile": "boulder", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" }
+            ],
+            [
+                { "tile": "start", "orientation": 90, "type": "fixed" },
+                { "tile": "boulder", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" }
+            ],
+            [
+                { "tile": "start", "orientation": 90, "type": "fixed" },
+                { "tile": "boulder", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" },
+                { "tile": "corner", "orientation": 0, "type": "fixed" },
+                { "tile": "corner", "orientation": 90, "type": "fixed" }
+            ]
+        ],
+        "player-fill-options": [
+            { "tile": "corner" },
+            { "tile": "corner" },
+            { "tile": "corner" },
+            { "tile": "corner" },
+            { "tile": "corner" },
+            { "tile": "straight" },
+            { "tile": "straight" }
+        ]
     }
 ]
