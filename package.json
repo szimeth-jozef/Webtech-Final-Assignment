@@ -10,6 +10,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@interactjs/types": "^1.10.17",
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
     "@tsconfig/svelte": "^3.0.0",
     "svelte": "^3.54.0",
@@ -19,6 +20,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "@interactjs/interact": "^1.10.17",
     "svelte-spa-router": "^3.3.0"
   }
 }

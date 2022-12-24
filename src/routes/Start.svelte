@@ -1,7 +1,7 @@
 <script lang="ts">
   import svelteLogo from '../assets/svelte.svg'
-  import Counter from '../lib/Counter.svelte'
   import { push } from 'svelte-spa-router'
+  import { isMobileBrowser } from '../utils/platform'
 
   interface Difficulty {
     id: string,
@@ -22,26 +22,30 @@
     return await screen.orientation.lock("portrait")
   }
 
-  function startGame() {
-    lockScreenToPortrait()
-      .then(() => {
-          console.log("Screen locked to portrait.")
-          document.getElementById("screen-lock").innerText = "Screen locked to portrait."
-          push(`/game/${selected.id}`)
+  function onStartGameButtonClicked() {
+    if (isMobileBrowser()) {
+      lockScreenToPortrait()
+        .then(() => {
+            console.log("Screen locked to portrait.")
+            document.getElementById("screen-lock").innerText = "Screen locked to portrait."
+            push(`/game/${selected.id}`)
+          })
+        .catch(err => {
+          console.error(`Failed locking the screen to portrait: ${err}`)
+          document.getElementById("screen-lock").innerText = `Failed locking the screen to portrait: ${err}`
         })
-      .catch(err => {
-        console.error(`Failed locking the screen to portrait: ${err}`)
-        document.getElementById("screen-lock").innerText = `Failed locking the screen to portrait: ${err}`
-      })
+    }
+    else {
+      push(`/game/${selected.id}`)
+    }
   }
 
 </script>
 
 <main>
   <h1>Welcome, gamer. Select what you wanna do next...</h1>
-  <h2 id="is-fullscreen">x</h2>
   <h2 id="screen-lock">x</h2>
-  <button on:click={startGame}>Začat novú hru</button>
+  <button on:click={onStartGameButtonClicked}>Začat novú hru</button>
 
   <select bind:value={selected}>
     {#each difficulties as difficulty}
@@ -62,11 +66,7 @@
       </a>
     </div>
     <h1>Vite + Svelte</h1>
-  
-    <div class="card">
-      <Counter />
-    </div>
-  
+
     <p>
       Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
     </p>
