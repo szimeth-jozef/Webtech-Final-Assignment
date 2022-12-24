@@ -1,12 +1,18 @@
 export default class Tile {
-    private tile: HTMLCanvasElement
+    private tile: HTMLImageElement
     private orientation: number
+    private name: string
     private type: string
 
-    constructor(tile: HTMLCanvasElement, orientation: number, type: string) {
+    constructor(tile: HTMLImageElement, orientation: number, name: string, type: string) {
         this.orientation = 0
         this.tile = tile
+        this.name = name
         this.rotate(orientation)
+    }
+
+    public getName() {
+        return this.name
     }
 
     public getHTMLElement() {

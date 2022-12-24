@@ -11,7 +11,7 @@ export default class SpriteSheet {
         this.tiles = new Map()
     }
 
-    public define(name: string, x: number, y: number) {
+    public define(name: string, x: number, y: number): void {
         const buffer = document.createElement("canvas")
         buffer.width = this.width
         buffer.height = this.height
@@ -30,19 +30,17 @@ export default class SpriteSheet {
         this.tiles.set(name, buffer)
     }
 
-    public get(name: string) {
+    public get(name: string): HTMLImageElement {
         const tile = this.tiles.get(name)
         if (!tile) {
             return null
         }
 
-        const copyBuffer = document.createElement("canvas")
-        copyBuffer.width = this.width
-        copyBuffer.height = this.height
-        copyBuffer
-            .getContext("2d")
-            .drawImage(tile, 0, 0)
+        const image = document.createElement("img")
+        image.width = this.width
+        image.height = this.height
+        image.src = tile.toDataURL()
 
-        return copyBuffer
+        return image
     }
 }

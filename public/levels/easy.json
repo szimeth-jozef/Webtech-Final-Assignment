@@ -1,74 +1,108 @@
-[
-    {
-        "name": "level1",
-        "board": [
-            [
-                { "tile": "start", "orientation": 90, "type": "fixed" },
-                { "tile": "boulder", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" }
+{
+    "difficulty": "easy",
+    "gameBoardSizes": 6,
+    "levels": [
+        {
+            "name": "level1",
+            "pickBoardSize": 7,
+            "board": [
+                [
+                    { "tile": "start", "orientation": 0, "type": "fixed" },
+                    { "tile": "boulder", "orientation": 0, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 90, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 90, "type": "fixed" }
+                ],
+                [
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 90, "type": "fixed"},
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { "tile": "corner", "orientation": 0 }
+                    },
+                    { "tile": "straightFixed", "orientation": 90, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" },
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { "tile": "straight", "orientation": 0 }
+                    }
+                ],
+                [
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { }
+                    },
+                    { "tile": "cornerFixed", "orientation": 90, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "finish", "orientation": 0, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 0, "type": "fixed" },
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { }
+                    }
+                ],
+                [
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" }
+                ],
+                [
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { }
+                    },
+                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { }
+                    },
+                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" }
+                ],
+                [
+                    { "tile": "cornerFixed", "orientation": 270, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 90, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 270, "type": "fixed" },
+                    {
+                        "tile": "none",
+                        "orientation": 0,
+                        "type": "empty",
+                        "solution": { }
+                    },
+                    { "tile": "boulder", "orientation": 0, "type": "fixed" }
+                ]
             ],
-            [
-                { "tile": "straight", "orientation": 0, "type": "fixed" },
-                { "tile": "straight", "orientation": 90, "type": "fixed"},
-                {
-                    "tile": "none",
-                    "orientation": 0,
-                    "type": "empty",
-                    "solution": { "tile": "corner", "orientation": 0 }
-                },
-                { "tile": "straight", "orientation": 90, "type": "fixed" },
-                { "tile": "corner", "orientation": 180, "type": "fixed" },
-                {
-                    "tile": "none",
-                    "orientation": 0,
-                    "type": "empty",
-                    "solution": { "tile": "straight", "orientation": 0 }
-                }
-            ],
-            [
-                { "tile": "start", "orientation": 90, "type": "fixed" },
-                { "tile": "boulder", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" }
-            ],
-            [
-                { "tile": "start", "orientation": 90, "type": "fixed" },
-                { "tile": "boulder", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" }
-            ],
-            [
-                { "tile": "start", "orientation": 90, "type": "fixed" },
-                { "tile": "boulder", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" }
-            ],
-            [
-                { "tile": "start", "orientation": 90, "type": "fixed" },
-                { "tile": "boulder", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" },
-                { "tile": "corner", "orientation": 0, "type": "fixed" },
-                { "tile": "corner", "orientation": 90, "type": "fixed" }
+            "playerFillOptions": [
+                { "tile": "corner" },
+                { "tile": "corner" },
+                { "tile": "corner" },
+                { "tile": "corner" },
+                { "tile": "corner" },
+                { "tile": "straight" },
+                { "tile": "straight" }
             ]
-        ],
-        "player-fill-options": [
-            { "tile": "corner" },
-            { "tile": "corner" },
-            { "tile": "corner" },
-            { "tile": "corner" },
-            { "tile": "corner" },
-            { "tile": "straight" },
-            { "tile": "straight" }
-        ]
-    }
-]
+        },
+        {
+            "name": "level2",
+            "board": []
+        }
+    ]
+}
