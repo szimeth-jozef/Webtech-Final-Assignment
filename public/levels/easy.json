@@ -7,28 +7,30 @@
             "pickBoardSize": 7,
             "board": [
                 [
-                    { "tile": "start", "orientation": 0, "type": "fixed" },
-                    { "tile": "boulder", "orientation": 0, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 90, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 90, "type": "fixed" }
+                    { "tile": "start", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "boulder", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "swappable": false }
                 ],
                 [
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 90, "type": "fixed"},
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "swappable": false },
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { "tile": "corner", "orientation": 0 }
                     },
-                    { "tile": "straightFixed", "orientation": 90, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "swappable": false },
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { "tile": "straight", "orientation": 0 }
                     }
                 ],
@@ -36,68 +38,73 @@
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { }
                     },
-                    { "tile": "cornerFixed", "orientation": 90, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "finish", "orientation": 0, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "finish", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 0, "rotable": false, "swappable": false },
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { }
                     }
                 ],
                 [
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" }
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false }
                 ],
                 [
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { }
                     },
-                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 0, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "swappable": false },
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { }
                     },
-                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" }
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "swappable": false }
                 ],
                 [
-                    { "tile": "cornerFixed", "orientation": 270, "type": "fixed" },
-                    { "tile": "straightFixed", "orientation": 90, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 180, "type": "fixed" },
-                    { "tile": "cornerFixed", "orientation": 270, "type": "fixed" },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "swappable": false },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "swappable": false },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "swappable": false },
                     {
                         "tile": "none",
                         "orientation": 0,
-                        "type": "empty",
+                        "rotable": false,
+                        "swappable": true,
                         "solution": { }
                     },
-                    { "tile": "boulder", "orientation": 0, "type": "fixed" }
+                    { "tile": "boulder", "orientation": 0, "rotable": false, "swappable": false }
                 ]
             ],
-            "playerFillOptions": [
-                { "tile": "corner" },
-                { "tile": "corner" },
-                { "tile": "corner" },
-                { "tile": "corner" },
-                { "tile": "corner" },
-                { "tile": "straight" },
-                { "tile": "straight" }
+            "playerPickTiles": [
+                { "tile": "corner", "orientation": 0, "rotable": true, "swappable": true },
+                { "tile": "straight", "orientation": 0, "rotable": true, "swappable": true },
+                { "tile": "corner", "orientation": 0, "rotable": true, "swappable": true },
+                { "tile": "corner", "orientation": 0, "rotable": true, "swappable": true },
+                { "tile": "straight", "orientation": 0, "rotable": true, "swappable": true },
+                { "tile": "corner", "orientation": 0, "rotable": true, "swappable": true },
+                { "tile": "corner", "orientation": 0, "rotable": true, "swappable": true }
             ]
         },
         {

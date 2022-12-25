@@ -12,21 +12,35 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
     const pickBoardSize: number = levelData.pickBoardSize
 
     const board = new Board(gameBoardSize, pickBoardSize)
-    board.printGameBoard()
+    board.printBoardState()
 
     for (let i = 0; i < gameBoardSize; i++) {
         for (let j = 0; j < gameBoardSize; j++) {
             const jsonTile = levelData.board[i][j]
-            board.setGameBoardItem(new Tile(
+            const tile = new Tile(
                 sprites.get(jsonTile.tile),
                 jsonTile.orientation,
-                jsonTile.tile,
-                jsonTile.type
-            ), j, i)
+                jsonTile.rotable,
+                jsonTile.swappable,
+                jsonTile.tile
+            )
+            board.setGameBoardItem(tile, j, i)
         }
     }
 
-    board.printGameBoard()
+    for (let i = 0; i < pickBoardSize; i++) {
+        const jsonTile = levelData.playerPickTiles[i]
+        const tile = new Tile(
+            sprites.get(jsonTile.tile),
+            jsonTile.orientation,
+            jsonTile.rotable,
+            jsonTile.swappable,
+            jsonTile.tile
+        )
+        board.setPickBoardItem(tile, i)
+    }
+
+    board.printBoardState()
 
     return board
 

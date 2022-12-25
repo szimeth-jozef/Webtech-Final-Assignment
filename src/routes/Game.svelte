@@ -33,13 +33,11 @@
 
         setupControls()
 
-        const container = document.querySelector(".board-container")
-        for (let y = 0; y < board.getGameBoardSize(); y++) {
-            for (let x = 0; x < board.getGameBoardSize(); x++) {
-                const tile = board.getGameBoardItem(x, y)
-                container.appendChild(tile.getHTMLElement())
-            }
-        }
+        const gameBoardcontainer = document.querySelector(".game-board")
+        const pickBoardContainer = document.querySelector(".pick-board")
+        board.populateGameBoardContainer(gameBoardcontainer)
+        board.populatePickBoardContainer(pickBoardContainer)
+        
 
         // Experimets with drag and drop
 
@@ -54,9 +52,9 @@
             elem.style.background = '';
         }
 
-        let currentDroppable = null
-
         draggable.onmousedown = event => {
+            let currentDroppable = null
+
             draggable.style.position = "absolute"
             
             function moveAt(pageX, pageY) {
@@ -103,6 +101,8 @@
         }
 
         draggable.ontouchstart = event => {
+            let currentDroppable = null
+
             draggable.style.position = "absolute"
             
             function moveAt(pageX, pageY) {
@@ -149,6 +149,7 @@
                 draggable.ontouchend = null;
             };
         }
+
     })
     .catch(err => {
         loading = false
@@ -156,26 +157,57 @@
     })
 </script>
 
-<main>
-    <Loader {loading} />
 
-    <h1>Lets rooooock on {params.difficulty}!</h1>
-    <h2 id="controls">None</h2>
+<Loader {loading} />
+<p>Difficulty: {params.difficulty}</p>
+<p>Level 1</p>
+<h2 id="controls">None</h2>
 
-    <div class="board-container"></div>
+<div class="game-board"></div>
+<div class="pick-board-background">
+    <div class="pick-board"></div>
+</div>
 
-    <div class="dragfield">
-        <div id="target"></div>
-        <div id="draggable"></div>
-    </div>
-</main>
+<div class="dragfield">
+    <div id="target"></div>
+    <div id="draggable"></div>
+</div>
 
 <style>
-    div.board-container {
+    :root {
+        --game-board-grid-size: 6;  /* Set from JS */
+        --game-board-grid-item-size: 60px;  /* Set from JS */
+        --pick-board-grid-size: calc(var(--game-board-grid-size) - 1);
+        --pick-board-background-color: brown;
+    }
+
+    div.game-board {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);  /* Set from JS */
-        max-width: calc(6 * 60px);  /* Set from JS */
+        grid-template-columns: repeat(var(--game-board-grid-size), 1fr);
+        max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
         margin: 0 auto;
+        margin-bottom: 2rem;
+    }
+
+    div.pick-board-background {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--pick-board-background-color);
+        max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
+
+    }
+
+    div.pick-board {
+        display: grid;
+        grid-template-columns: repeat(var(--pick-board-grid-size), 1fr);
+        /* max-width: calc(
+            var(--pick-board-grid-size) * var(--game-board-grid-item-size) +
+            calc(var(--pick-board-grid-size) - 1) * 0.5rem
+        ); */
+        margin: 0 auto;
+        gap: 0.5rem;
+        padding: 14px 0;
     }
 
     /* Sketch css */
