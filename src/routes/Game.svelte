@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { GamePropType } from '../types/props.type'
 
-    import { setupControls } from '../lib/Controls'
+    import { addTileMovementControls, setupControls } from '../lib/Controls'
     import { fetchLevels, fetchSpriteSheet } from '../lib/DependencyLoaders'
     import SpriteSheet from '../lib/SpriteSheet'
     import Loader from '../components/Loader.svelte'
@@ -29,18 +29,19 @@
         sprites.define("boulder", 4, 0)
         sprites.define("none", 0, 1)
 
+        setupControls()
+
         const board = createBoard(levelsJsonData, sprites)
 
-        setupControls()
+        addTileMovementControls(board)
 
         const gameBoardcontainer = document.querySelector(".game-board")
         const pickBoardContainer = document.querySelector(".pick-board")
         board.populateGameBoardContainer(gameBoardcontainer)
         board.populatePickBoardContainer(pickBoardContainer)
-        
+
 
         // Experimets with drag and drop
-
         const draggable = document.getElementById("draggable")
         const target = document.getElementById("target")
 
@@ -179,6 +180,16 @@
         --game-board-grid-item-size: 60px;  /* Set from JS */
         --pick-board-grid-size: calc(var(--game-board-grid-size) - 1);
         --pick-board-background-color: brown;
+    }
+
+    :global(img.draggable) {
+        cursor: pointer;
+    }
+
+    /* Dropzone hover style */
+    :global(img.dropzone-hover) {
+        filter: sepia(0.75);
+        transition: 0.25s filter ease;
     }
 
     div.game-board {

@@ -1,23 +1,20 @@
 export default class Tile {
     private tile: HTMLImageElement
     private orientation: number
-    private rotable: boolean
-    private swappable: boolean
+    private tileProps: TileProperties
     // ===== DEBUG INFO =====
     private name: string
 
     constructor(
         tile: HTMLImageElement,
         orientation: number,
-        rotable: boolean,
-        swappable: boolean,
+        props: TileProperties,
         name: string
     ) {
-        this.rotable = rotable
-        this.swappable = swappable
-        this.orientation = 0
+        this.orientation = orientation
+        this.tileProps = props
         this.tile = tile
-        this.setInitOrientation(orientation)
+        this.initializeTile()
         
         this.name = name
     }
@@ -34,24 +31,44 @@ export default class Tile {
         return this.tile
     }
 
-    public isSwappable() {
-        return this.swappable
+    public isMovable() {
+        return this.tileProps.movable
     }
 
-    public rotate(byDeg: number) {
-        if (!this.rotable) {
-            console.warn(`An attempt to rotate a non-rotable tile [${this.name}]`)
-            console.trace()
-            return
-        }
-        this.orientation += byDeg
+    // public rotate(byDeg: number) {
+    //     if (!this.tileProps.rotable) {
+    //         console.warn(`An attempt to rotate a non-rotable tile [${this.name}]`)
+    //         console.trace()
+    //         return
+    //     }
+    //     this.orientation += byDeg
+    //     this.tile.style.transform = `rotate(${this.orientation}deg)`
+    // }
+
+    private initializeTile() {
         this.tile.style.transform = `rotate(${this.orientation}deg)`
-    }
 
-    private setInitOrientation(orientation: number) {
-        if (orientation > 0) {
-            this.orientation = orientation
-            this.tile.style.transform = `rotate(${this.orientation}deg)`
+        if (this.isMovable()) {
+            this.tile.classList.add("draggable")
         }
+
+        if (this.tileProps.receiver) {
+            this.tile.classList.add("dropzone")
+        }
+
+        // if (this.tileProps.rotable) {
+        //     this.tile.addEventListener("click", event => {
+        //         this.rotate(90)
+        //     })
+        // }
+
+        // Remove img default drag event
+        this.tile.ondragstart = () => false
     }
+}
+
+export interface TileProperties {
+    rotable: boolean,
+    movable: boolean,
+    receiver: boolean
 }

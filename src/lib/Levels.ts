@@ -3,7 +3,7 @@
 
 import Board from "./Board"
 import type SpriteSheet from "./SpriteSheet"
-import Tile from "./Tile"
+import Tile, { type TileProperties } from "./Tile"
 
 export function createBoard(levelsData, sprites: SpriteSheet) {
     const gameBoardSize: number = levelsData.gameBoardSizes
@@ -17,11 +17,20 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
     for (let i = 0; i < gameBoardSize; i++) {
         for (let j = 0; j < gameBoardSize; j++) {
             const jsonTile = levelData.board[i][j]
+
+            const tileProps: TileProperties = {
+                rotable: jsonTile.rotable,
+                movable: jsonTile.movable,
+                receiver: jsonTile.receiver
+            }
+
+            const imgElm = sprites.get(jsonTile.tile)
+            imgElm.setAttribute("id", `${j}-${i}`)
+
             const tile = new Tile(
-                sprites.get(jsonTile.tile),
+                imgElm,
                 jsonTile.orientation,
-                jsonTile.rotable,
-                jsonTile.swappable,
+                tileProps,
                 jsonTile.tile
             )
             board.setGameBoardItem(tile, j, i)
@@ -30,11 +39,20 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
 
     for (let i = 0; i < pickBoardSize; i++) {
         const jsonTile = levelData.playerPickTiles[i]
+
+        const tileProps: TileProperties = {
+            rotable: jsonTile.rotable,
+            movable: jsonTile.movable,
+            receiver: jsonTile.receiver
+        }
+
+        const imgElm = sprites.get(jsonTile.tile)
+        imgElm.setAttribute("id", i.toString())
+
         const tile = new Tile(
-            sprites.get(jsonTile.tile),
+            imgElm,
             jsonTile.orientation,
-            jsonTile.rotable,
-            jsonTile.swappable,
+            tileProps,
             jsonTile.tile
         )
         board.setPickBoardItem(tile, i)
