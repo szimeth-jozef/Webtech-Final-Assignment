@@ -87,7 +87,6 @@ function addDesktopTileMovementConstrols(board: Board) {
             const tile = board.getGameBoardItem(j, i)
 
             if (tile.isMovable()) {
-                console.log("Adding onmousedown")
                 const tileElement = tile.getHTMLElement()
 
                 tileElement.onmousedown = event => {
@@ -101,7 +100,6 @@ function addDesktopTileMovementConstrols(board: Board) {
         const tile = board.getPickBoardItem(i)
 
         if (tile.isMovable()) {
-            console.log("Adding onmousedown")
             const tileElement = tile.getHTMLElement()
 
             tileElement.onmousedown = event => {
@@ -111,9 +109,37 @@ function addDesktopTileMovementConstrols(board: Board) {
     }
 }
 
+function addMobileTileMovementConstrols(board: Board) {
+    for (let i = 0; i < board.gameBoardSize; i++) {
+        for (let j = 0; j < board.gameBoardSize; j++) {
+            const tile = board.getGameBoardItem(j, i)
+
+            if (tile.isMovable()) {
+                const tileElement = tile.getHTMLElement()
+
+                tileElement.ontouchstart = event => {
+                    tileOnTouchStartHandle(event, board)
+                }
+            }
+        }
+    }
+
+    for (let i = 0; i < board.pickBoardSize; i++) {
+        const tile = board.getPickBoardItem(i)
+
+        if (tile.isMovable()) {
+            const tileElement = tile.getHTMLElement()
+
+            tileElement.ontouchstart = event => {
+                tileOnTouchStartHandle(event, board)
+            }
+        }
+    }
+}
+
 function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
     const tileElement = mouseEvent.target as HTMLImageElement
-    
+
     const tempTileClone = tileElement.cloneNode() as HTMLImageElement
     tempTileClone.removeAttribute("id")
     tempTileClone.style.position = "absolute"
@@ -122,36 +148,36 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
     
     if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "hidden"
     document.body.appendChild(tempTileClone)
-    
-    function moveAt(pageX, pageY) {
-        tempTileClone.style.left = pageX - tempTileClone.offsetWidth / 2 + 'px';
-        tempTileClone.style.top = pageY - tempTileClone.offsetHeight / 2 + 'px';
+
+    function moveAt(pageX: number, pageY: number) {
+        tempTileClone.style.left = pageX - tempTileClone.offsetWidth / 2 + 'px'
+        tempTileClone.style.top = pageY - tempTileClone.offsetHeight / 2 + 'px'
     }
 
-    moveAt(mouseEvent.pageX, mouseEvent.pageY);
+    moveAt(mouseEvent.pageX, mouseEvent.pageY)
 
     let currentDroppable = null
 
     function onMouseMove(event) {
-        moveAt(event.pageX, event.pageY);
+        moveAt(event.pageX, event.pageY)
 
-        tempTileClone.hidden = true;
-        let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-        tempTileClone.hidden = false;
+        tempTileClone.hidden = true
+        let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
+        tempTileClone.hidden = false
 
-        if (!elemBelow) return;
+        if (!elemBelow) return
 
-        let droppableBelow = elemBelow.closest(".dropzone");
+        let droppableBelow = elemBelow.closest(".dropzone")
         if (currentDroppable != droppableBelow) {
             if (currentDroppable) { 
                 // null when we were not over a droppable before this event
-                leaveDroppable(currentDroppable);
+                leaveDroppable(currentDroppable)
             }
             currentDroppable = droppableBelow;
             if (currentDroppable) { 
                 // null if we're not coming over a droppable now
                 // (maybe just left the droppable)
-                enterDroppable(currentDroppable);
+                enterDroppable(currentDroppable)
             }
         }
     }
@@ -162,11 +188,10 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
     // (3) drop the tile, remove unneeded handlers
     tempTileClone.onmouseup = function() {
         document.removeEventListener('mousemove', onMouseMove);
-        tileElement.onmouseup = null;
+        tempTileClone.onmouseup = null;
         if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "visible"
         tempTileClone.remove()
 
-        console.log(currentDroppable)
         if (currentDroppable) {
             // Swap currentDroppable with tileElement
             // 1. swap id's
@@ -186,15 +211,102 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
             tileElement.classList.remove("dropzone-hover")
 
             // 3. swap actual DOM elements
-            // currentDroppable.parentNode.replaceChild(tileElement, currentDroppable);
-            // tileElement.parentNode.replaceChild(currentDroppable, tileElement);
-            swap(currentDroppable, tileElement)
+            swapHTMLElements(currentDroppable, tileElement)
 
+            // 4. Update board data structure (swap Tile's)
+            board.replaceTiles(targetId, draggedId)
+            board.printBoardState()
         }
-    };
+    }
 }
 
-function swap(node1, node2) {
+function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
+    console.log("Touch started...")
+    const tileElement = touchEvent.target as HTMLImageElement
+
+    const tempTileClone = tileElement.cloneNode() as HTMLImageElement
+    tempTileClone.removeAttribute("id")
+    tempTileClone.style.position = "absolute"
+    tempTileClone.style.opacity = "0.5"
+
+    if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "hidden"
+    document.body.appendChild(tempTileClone)
+
+    function moveAt(pageX: number, pageY: number) {
+        tempTileClone.style.left = pageX - tempTileClone.offsetWidth / 2 + 'px'
+        tempTileClone.style.top = pageY - tempTileClone.offsetHeight / 2 + 'px'
+    }
+
+    const primaryTouch = touchEvent.changedTouches[0]
+    moveAt(primaryTouch.pageX, primaryTouch.pageY)
+
+    let currentDroppable = null
+
+    function onMouseMove(event) {
+        console.log("Moving finger...")
+        const primaryTouch = event.changedTouches[0]
+        moveAt(primaryTouch.pageX, primaryTouch.pageY)
+
+        tempTileClone.hidden = true
+        let elemBelow = document.elementFromPoint(primaryTouch.clientX, primaryTouch.clientY)
+        tempTileClone.hidden = false
+
+        if (!elemBelow) return
+
+        let droppableBelow = elemBelow.closest(".dropzone")
+        if (currentDroppable != droppableBelow) {
+            if (currentDroppable) { // null when we were not over a droppable before this event
+                leaveDroppable(currentDroppable)
+            }
+            currentDroppable = droppableBelow;
+            if (currentDroppable) { // null if we're not coming over a droppable now
+                // (maybe just left the droppable)
+                enterDroppable(currentDroppable)
+            }
+        }
+    }
+
+    // (2) move the tile on mousemove
+    document.addEventListener('touchmove', onMouseMove)
+
+    // (3) drop the tile, remove unneeded handlers
+    tileElement.ontouchend = function() {
+        console.log("Touch ended.")
+        document.removeEventListener('touchmove', onMouseMove)
+        tileElement.ontouchend = null
+        if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "visible"
+        tempTileClone.remove()
+
+        if (currentDroppable) {
+            // Swap currentDroppable with tileElement
+            // 1. swap id's
+            // 2. Remove and/or add some classes idk yet)
+            // 3. swap actual DOM elements
+            // 4. Update board data structure (swap Tile's)
+
+            // 1. swap id's
+            const targetId = currentDroppable.getAttribute("id")
+            const draggedId = tileElement.getAttribute("id")
+
+            currentDroppable.setAttribute("id", draggedId)
+            tileElement.setAttribute("id", targetId)
+
+            // 2. Remove and/or add some classes idk yet)
+            currentDroppable.classList.remove("dropzone-hover")
+            tileElement.classList.remove("dropzone-hover")
+
+            // 3. swap actual DOM elements
+            swapHTMLElements(currentDroppable, tileElement)
+
+            // 4. Update board data structure (swap Tile's)
+            board.replaceTiles(targetId, draggedId)
+            board.printBoardState()
+            console.log("Finished touch end operations.")
+        }
+    }
+}
+
+function swapHTMLElements(node1: HTMLElement, node2: HTMLElement) {
     const afterNode2 = node2.nextElementSibling;
     const parent = node2.parentNode;
     node1.replaceWith(node2);
@@ -208,5 +320,3 @@ function enterDroppable(elem) {
 function leaveDroppable(elem) {
     elem.classList.remove("dropzone-hover")
 }
-
-function addMobileTileMovementConstrols(board: Board) {}

@@ -28,10 +28,16 @@
         sprites.define("corner", 1, 1)
         sprites.define("boulder", 4, 0)
         sprites.define("none", 0, 1)
+        sprites.define("tree", 4, 1)
 
         setupControls()
 
         const board = createBoard(levelsJsonData, sprites)
+
+        // set css variables
+        const root = document.documentElement
+        root.style.setProperty("--game-board-grid-size", levelsJsonData.gameBoardSizes)
+        root.style.setProperty("--game-board-grid-item-size", `${levelsJsonData.tileDimensions}px`)
 
         addTileMovementControls(board)
 
@@ -39,117 +45,6 @@
         const pickBoardContainer = document.querySelector(".pick-board")
         board.populateGameBoardContainer(gameBoardcontainer)
         board.populatePickBoardContainer(pickBoardContainer)
-
-
-        // Experimets with drag and drop
-        const draggable = document.getElementById("draggable")
-        const target = document.getElementById("target")
-
-        function enterDroppable(elem) {
-            elem.style.background = 'pink';
-        }
-
-        function leaveDroppable(elem) {
-            elem.style.background = '';
-        }
-
-        draggable.onmousedown = event => {
-            let currentDroppable = null
-
-            draggable.style.position = "absolute"
-            
-            function moveAt(pageX, pageY) {
-                draggable.style.left = pageX - draggable.offsetWidth / 2 + 'px';
-                draggable.style.top = pageY - draggable.offsetHeight / 2 + 'px';
-            }
-
-            // move our absolutely positioned ball under the pointer
-            moveAt(event.pageX, event.pageY);
-
-            function onMouseMove(event) {
-                moveAt(event.pageX, event.pageY);
-
-                draggable.hidden = true;
-                let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-                draggable.hidden = false;
-
-                if (!elemBelow) return;
-
-                let droppableBelow = elemBelow.closest('#target');
-                if (currentDroppable != droppableBelow) {
-                    if (currentDroppable) { // null when we were not over a droppable before this event
-                        leaveDroppable(currentDroppable);
-                    }
-                    currentDroppable = droppableBelow;
-                    if (currentDroppable) { // null if we're not coming over a droppable now
-                        // (maybe just left the droppable)
-                        enterDroppable(currentDroppable);
-                    }
-                }
-            }
-
-            // (2) move the ball on mousemove
-            document.addEventListener('mousemove', onMouseMove);
-
-            // (3) drop the ball, remove unneeded handlers
-            draggable.onmouseup = function() {
-                document.removeEventListener('mousemove', onMouseMove);
-                draggable.style.removeProperty("position")
-                draggable.style.removeProperty("left")
-                draggable.style.removeProperty("top")
-                draggable.onmouseup = null;
-            };
-        }
-
-        draggable.ontouchstart = event => {
-            let currentDroppable = null
-
-            draggable.style.position = "absolute"
-            
-            function moveAt(pageX, pageY) {
-                draggable.style.left = pageX - draggable.offsetWidth / 2 + 'px';
-                draggable.style.top = pageY - draggable.offsetHeight / 2 + 'px';
-            }
-
-            // move our absolutely positioned ball under the pointer
-            const primaryTouch = event.changedTouches[0]
-            moveAt(primaryTouch.pageX, primaryTouch.pageY);
-
-            function onMouseMove(event) {
-                const primaryTouch = event.changedTouches[0]
-                moveAt(primaryTouch.pageX, primaryTouch.pageY);
-
-                draggable.hidden = true;
-                let elemBelow = document.elementFromPoint(primaryTouch.clientX, primaryTouch.clientY);
-                draggable.hidden = false;
-
-                if (!elemBelow) return;
-
-                let droppableBelow = elemBelow.closest('#target');
-                if (currentDroppable != droppableBelow) {
-                    if (currentDroppable) { // null when we were not over a droppable before this event
-                        leaveDroppable(currentDroppable);
-                    }
-                    currentDroppable = droppableBelow;
-                    if (currentDroppable) { // null if we're not coming over a droppable now
-                        // (maybe just left the droppable)
-                        enterDroppable(currentDroppable);
-                    }
-                }
-            }
-
-            // (2) move the ball on mousemove
-            document.addEventListener('touchmove', onMouseMove);
-
-            // (3) drop the ball, remove unneeded handlers
-            draggable.ontouchend = function() {
-                document.removeEventListener('touchmove', onMouseMove);
-                draggable.style.removeProperty("position")
-                draggable.style.removeProperty("left")
-                draggable.style.removeProperty("top")
-                draggable.ontouchend = null;
-            };
-        }
 
     })
     .catch(err => {
@@ -160,25 +55,25 @@
 
 
 <Loader {loading} />
-<p>Difficulty: {params.difficulty}</p>
-<p>Level 1</p>
-<h2 id="controls">None</h2>
+<p>Difficulty: {params.difficulty} | Level 1</p>
+<h2 class="debug-info">DEBUG-INFO[ball controll]: <span id="controls">None</span></h2>
+<div id="top-control-panel">
+    <button class="game-button__secondary">Nápoveda</button>
+    <button class="game-button__secondary">Riešenie</button>
+</div>
 
 <div class="game-board"></div>
+<button class="game-button__primary" disabled>Roll The Ball</button>
 <div class="pick-board-background">
     <div class="pick-board"></div>
 </div>
 
-<div class="dragfield">
-    <div id="target"></div>
-    <div id="draggable"></div>
-</div>
 
 <style>
     :root {
         --game-board-grid-size: 6;  /* Set from JS */
         --game-board-grid-item-size: 60px;  /* Set from JS */
-        --pick-board-grid-size: calc(var(--game-board-grid-size) - 1);
+        --pick-board-grid-size: 5;  /* Fixed to 5 for now */
         --pick-board-background-color: brown;
     }
 
@@ -192,12 +87,18 @@
         transition: 0.25s filter ease;
     }
 
+    #top-control-panel {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+    }
+
     div.game-board {
         display: grid;
         grid-template-columns: repeat(var(--game-board-grid-size), 1fr);
         max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
         margin: 0 auto;
-        margin-bottom: 2rem;
+        /* margin-bottom: 2rem; */
     }
 
     div.pick-board-background {
@@ -206,7 +107,6 @@
         align-items: center;
         background-color: var(--pick-board-background-color);
         max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
-
     }
 
     div.pick-board {
@@ -221,21 +121,16 @@
         padding: 14px 0;
     }
 
-    /* Sketch css */
-    .dragfield {
-        display: flex;
-        justify-content: space-between;
+    .game-button__primary {
+        margin: 1.5rem 0.5rem;
+        padding: 5px 7px;
     }
 
-    #target {
-        width: 100px;
-        height: 100px;
-        background-color: darkgray;
+    .game-button__secondary {
+        margin: 0 5px;
     }
 
-    #draggable {
-        width: 100px;
-        height: 100px;
-        background-color: aqua;
+    h2.debug-info {
+        margin: 5px 0;
     }
 </style>

@@ -72,3 +72,14 @@ export interface TileProperties {
     movable: boolean,
     receiver: boolean
 }
+
+export enum TilesBoard {
+    Game = "GAME",
+    Pick = "PICK"
+}
+
+export interface TileIdFormat {
+    tileAt: TilesBoard,
+    index: number,
+    position: Array<number>
+}

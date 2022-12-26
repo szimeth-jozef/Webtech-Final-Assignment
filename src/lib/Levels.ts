@@ -7,9 +7,11 @@ import Tile, { type TileProperties } from "./Tile"
 
 export function createBoard(levelsData, sprites: SpriteSheet) {
     const gameBoardSize: number = levelsData.gameBoardSizes
+    const tileDimensions: number = levelsData.tileDimensions
         
     const levelData = levelsData.levels[0]
     const pickBoardSize: number = levelData.pickBoardSize
+    console.log(tileDimensions)
 
     const board = new Board(gameBoardSize, pickBoardSize)
     board.printBoardState()
@@ -24,7 +26,7 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
                 receiver: jsonTile.receiver
             }
 
-            const imgElm = sprites.get(jsonTile.tile)
+            const imgElm = sprites.get(jsonTile.tile, tileDimensions)
             imgElm.setAttribute("id", `${j}-${i}`)
 
             const tile = new Tile(
@@ -46,7 +48,7 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
             receiver: jsonTile.receiver
         }
 
-        const imgElm = sprites.get(jsonTile.tile)
+        const imgElm = sprites.get(jsonTile.tile, tileDimensions)
         imgElm.setAttribute("id", i.toString())
 
         const tile = new Tile(

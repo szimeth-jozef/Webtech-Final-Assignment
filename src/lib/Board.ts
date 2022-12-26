@@ -1,3 +1,4 @@
+import { TilesBoard, type TileIdFormat } from "./Tile";
 import type Tile from "./Tile";
 
 export default class Board {
@@ -82,6 +83,56 @@ export default class Board {
         for (let i = 0; i < this.pickBoardSize; i++) {
             const tile = this.getPickBoardItem(i)
             container.appendChild(tile.getHTMLElement())
+        }
+    }
+
+
+    public replaceTiles(fromId: string, toId: string) {
+        const fromPos = this.decodeTileId(fromId)
+        const toPos = this.decodeTileId(toId)
+
+        if (fromPos.tileAt === TilesBoard.Game && toPos.tileAt === TilesBoard.Game) {
+            this.replaceTilesFromGameToGame(fromPos.position, toPos.position)
+        }
+        else if (fromPos.tileAt === TilesBoard.Pick && toPos.tileAt === TilesBoard.Game) {
+            this.replaceTilesFromPickToGame(fromPos.index, toPos.position)
+        }
+        else if (fromPos.tileAt === TilesBoard.Game && toPos.tileAt === TilesBoard.Pick) {
+            this.replaceTilesFromPickToGame(toPos.index, fromPos.position)
+        }
+    }
+
+
+    private replaceTilesFromPickToGame(index: number, pos: Array<number>) {
+        const tmp = this.getPickBoardItem(index)
+
+        this.setPickBoardItem(this.getGameBoardItem(pos[0], pos[1]), index)
+        this.setGameBoardItem(tmp, pos[0], pos[1])
+    }
+
+
+    private replaceTilesFromGameToGame(posFrom: Array<number>, posTo: Array<number>) {
+        const tmp = this.getGameBoardItem(posFrom[0], posFrom[1])
+
+        this.setGameBoardItem(this.getGameBoardItem(posTo[0], posTo[1]), posFrom[0], posFrom[1])
+        this.setGameBoardItem(tmp, posTo[0], posTo[1])
+    }
+
+
+    private decodeTileId(tileId: string): TileIdFormat {
+        if (tileId.length === 1) {
+            return {
+                tileAt: TilesBoard.Pick,
+                index: parseInt(tileId),
+                position: null
+            }
+        }
+        
+        const strPos = tileId.split("-")
+        return {
+            tileAt: TilesBoard.Game,
+            index: null,
+            position: [parseInt(strPos[0]), parseInt(strPos[1])]
         }
     }
 

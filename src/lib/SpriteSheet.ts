@@ -30,15 +30,15 @@ export default class SpriteSheet {
         this.tiles.set(name, buffer)
     }
 
-    public get(name: string): HTMLImageElement {
+    public get(name: string, size: number): HTMLImageElement {
         const tile = this.tiles.get(name)
         if (!tile) {
             return null
         }
 
         const image = document.createElement("img")
-        image.width = this.width
-        image.height = this.height
+        image.width = size
+        image.height = size
         image.src = tile.toDataURL()
 
         return image

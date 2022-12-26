@@ -1,18 +1,132 @@
-[
-    {
-        "board": 1232,
-        "solution": "Yaheee"
-    },
-    {
-        "board": 4324,
-        "solution": "Hello"
-    },
-    {
-        "board": 234,
-        "solution": "Sayonara"
-    },
-    {
-        "board": 4564,
-        "solution": "Mask off"
-    }
-]
+{
+    "difficulty": "hard",
+    "gameBoardSizes": 8,
+    "tileDimensions": "45",
+    "levels": [
+        {
+            "name": "Úloha 1",
+            "pickBoardSize": 8,
+            "board": [
+                [
+                    { "tile": "start", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "boulder", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "finish", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "tree", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "tree", "orientation": 0, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "none", "orientation": 0, "rotable": false, "movable": false, "receiver": true },
+                    { "tile": "boulder", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "tree", "orientation": 0, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "boulder", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "tree", "orientation": 0, "rotable": false, "movable": false, "receiver": false }
+                ],
+                [
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "straightFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 180, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 270, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "boulder", "orientation": 0, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "cornerFixed", "orientation": 90, "rotable": false, "movable": false, "receiver": false },
+                    { "tile": "tree", "orientation": 0, "rotable": false, "movable": false, "receiver": false }
+                ]
+            ],
+            "playerPickTiles": [
+                { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false }
+            ],
+            "solution": []
+        },
+        {
+            "name": "Úloha 2",
+            "pickBoardSize": 7,
+            "board": [],
+            "playerPickTiles": [],
+            "solution": []
+        },
+        {
+            "name": "Úloha 3",
+            "pickBoardSize": 7,
+            "board": [],
+            "playerPickTiles": [],
+            "solution": []
+        },
+        {
+            "name": "Úloha 4",
+            "pickBoardSize": 7,
+            "board": [],
+            "playerPickTiles": [],
+            "solution": []
+        },
+        {
+            "name": "Úloha 5",
+            "pickBoardSize": 7,
+            "board": [],
+            "playerPickTiles": [],
+            "solution": []
+        }
+    ]
+}
