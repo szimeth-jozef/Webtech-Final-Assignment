@@ -1,5 +1,5 @@
 export async function fetchLevels(difficulty:string) {
-    const url = `/levels/${difficulty}.json`
+    const url = `levels/${difficulty}.json`
 
     const response = await fetch(url)
     if (response.ok) {

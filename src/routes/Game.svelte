@@ -56,7 +56,7 @@
 
 <Loader {loading} />
 <p>Difficulty: {params.difficulty} | Level 1</p>
-<h2 class="debug-info">DEBUG-INFO[ball controll]: <span id="controls">None</span></h2>
+<h2 class="debug-info">DEBUG-INFO[ball-crtl]: <span id="controls">None</span></h2>
 <div id="top-control-panel">
     <button class="game-button__secondary">Nápoveda</button>
     <button class="game-button__secondary">Riešenie</button>
@@ -98,7 +98,6 @@
         grid-template-columns: repeat(var(--game-board-grid-size), 1fr);
         max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
         margin: 0 auto;
-        /* margin-bottom: 2rem; */
     }
 
     div.pick-board-background {

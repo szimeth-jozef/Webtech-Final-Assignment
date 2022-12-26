@@ -43,7 +43,7 @@
 </script>
 
 <main>
-  <h1>Welcome, gamer. Select what you wanna do next...</h1>
+  <h1>Puzzle Path</h1>
   <h2 id="screen-lock">x</h2>
   <button on:click={onStartGameButtonClicked}>Začat novú hru</button>
 
@@ -59,7 +59,7 @@
 
   <div>
       <a href="https://vitejs.dev" target="_blank" rel="noreferrer"> 
-        <img src="/vite.svg" class="logo" alt="Vite Logo" />
+        <img src="./vite.svg" class="logo" alt="Vite Logo" />
       </a>
       <a href="https://svelte.dev" target="_blank" rel="noreferrer"> 
         <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />

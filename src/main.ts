@@ -3,7 +3,7 @@ import App from './App.svelte'
 
 // TODO: register service worker for PWA
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("../serviceWorker.js")
+  navigator.serviceWorker.register("./serviceWorker.js")
       .then(reg => {
           console.log("Service worker registered")
           console.log(reg)
