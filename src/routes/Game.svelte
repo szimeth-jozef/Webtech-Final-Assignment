@@ -6,6 +6,7 @@
     import SpriteSheet from '../lib/SpriteSheet'
     import Loader from '../components/Loader.svelte'
     import { createBoard } from '../lib/Levels';
+    import Ball from '../lib/Ball';
 
     export let params: GamePropType
 
@@ -29,6 +30,7 @@
         sprites.define("boulder", 4, 0)
         sprites.define("none", 0, 1)
         sprites.define("tree", 4, 1)
+        sprites.define("ball", 3, 1)
 
         setupControls()
 
@@ -41,10 +43,27 @@
 
         addTileMovementControls(board)
 
-        const gameBoardcontainer = document.querySelector(".game-board")
-        const pickBoardContainer = document.querySelector(".pick-board")
+        const gameBoardcontainer: HTMLDivElement = document.querySelector(".game-board")
+        const pickBoardContainer: HTMLDivElement = document.querySelector(".pick-board")
         board.populateGameBoardContainer(gameBoardcontainer)
         board.populatePickBoardContainer(pickBoardContainer)
+
+        const ballImg = sprites.get("ball", levelsJsonData.tileDimensions)
+        const ball = new Ball(board, gameBoardcontainer, ballImg)
+
+        const rollBallButton = document.getElementById("ball-roll")
+        rollBallButton.addEventListener("click", event => {
+            board.toggleTileMovementControl()
+
+            if (board.isInEditMode) {
+                ball.placeBallAtStart()
+                rollBallButton.textContent = "Edit Tiles"
+            }
+            else {
+                rollBallButton.textContent = "Roll The Ball"
+                ball.removeBallFromBoard()
+            }
+        })
 
     })
     .catch(err => {
@@ -63,7 +82,7 @@
 </div>
 
 <div class="game-board"></div>
-<button class="game-button__primary" disabled>Roll The Ball</button>
+<button id="ball-roll" class="game-button__primary" disabled>Roll The Ball</button>
 <div class="pick-board-background">
     <div class="pick-board"></div>
 </div>
@@ -78,7 +97,7 @@
     }
 
     :global(img.draggable) {
-        cursor: pointer;
+        cursor: grab;
     }
 
     /* Dropzone hover style */
@@ -94,6 +113,7 @@
     }
 
     div.game-board {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(var(--game-board-grid-size), 1fr);
         max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));

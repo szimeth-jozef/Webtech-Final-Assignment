@@ -144,6 +144,7 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
     tempTileClone.removeAttribute("id")
     tempTileClone.style.position = "absolute"
     tempTileClone.style.opacity = "0.5"
+    tempTileClone.style.cursor = "grabbing"
     tempTileClone.ondragstart = () => false
     
     if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "hidden"
@@ -198,6 +199,7 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
             // 2. Remove and/or add some classes idk yet)
             // 3. swap actual DOM elements
             // 4. Update board data structure (swap Tile's)
+            // 5. Check if every empty tile is filled and if true enable roll button
 
             // 1. swap id's
             const targetId = currentDroppable.getAttribute("id")
@@ -216,12 +218,20 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
             // 4. Update board data structure (swap Tile's)
             board.replaceTiles(targetId, draggedId)
             board.printBoardState()
+
+            // 5. Check if every empty tile is filled and if true enable roll button
+            const button = document.getElementById("ball-roll") as HTMLButtonElement
+            if (board.isEmptyFieldOnBoard()) {
+                button.disabled = true
+            }
+            else {
+                button.disabled = false
+            }
         }
     }
 }
 
 function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
-    console.log("Touch started...")
     const tileElement = touchEvent.target as HTMLImageElement
 
     const tempTileClone = tileElement.cloneNode() as HTMLImageElement
@@ -243,7 +253,6 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
     let currentDroppable = null
 
     function onMouseMove(event) {
-        console.log("Moving finger...")
         const primaryTouch = event.changedTouches[0]
         moveAt(primaryTouch.pageX, primaryTouch.pageY)
 
@@ -271,7 +280,6 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
 
     // (3) drop the tile, remove unneeded handlers
     tileElement.ontouchend = function() {
-        console.log("Touch ended.")
         document.removeEventListener('touchmove', onMouseMove)
         tileElement.ontouchend = null
         if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "visible"
@@ -283,6 +291,7 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
             // 2. Remove and/or add some classes idk yet)
             // 3. swap actual DOM elements
             // 4. Update board data structure (swap Tile's)
+            // 5. Check if every empty tile is filled and if true enable roll button
 
             // 1. swap id's
             const targetId = currentDroppable.getAttribute("id")
@@ -301,7 +310,15 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
             // 4. Update board data structure (swap Tile's)
             board.replaceTiles(targetId, draggedId)
             board.printBoardState()
-            console.log("Finished touch end operations.")
+
+            // 5. Check if every empty tile is filled and if true enable roll button
+            const button = document.getElementById("ball-roll") as HTMLButtonElement
+            if (board.isEmptyFieldOnBoard()) {
+                button.disabled = true
+            }
+            else {
+                button.disabled = false
+            }
         }
     }
 }

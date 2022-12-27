@@ -8,10 +8,10 @@ import Tile, { type TileProperties } from "./Tile"
 export function createBoard(levelsData, sprites: SpriteSheet) {
     const gameBoardSize: number = levelsData.gameBoardSizes
     const tileDimensions: number = levelsData.tileDimensions
-        
+
+    // TODO: should be random, not hardcoded
     const levelData = levelsData.levels[0]
     const pickBoardSize: number = levelData.pickBoardSize
-    console.log(tileDimensions)
 
     const board = new Board(gameBoardSize, pickBoardSize)
     board.printBoardState()

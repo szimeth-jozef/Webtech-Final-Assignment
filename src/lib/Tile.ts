@@ -2,6 +2,7 @@ export default class Tile {
     private tile: HTMLImageElement
     private orientation: number
     private tileProps: TileProperties
+    private eventStore: object
     // ===== DEBUG INFO =====
     private name: string
 
@@ -14,6 +15,7 @@ export default class Tile {
         this.orientation = orientation
         this.tileProps = props
         this.tile = tile
+        this.eventStore = {}
         this.initializeTile()
         
         this.name = name
@@ -33,6 +35,39 @@ export default class Tile {
 
     public isMovable() {
         return this.tileProps.movable
+    }
+
+    public isEmpty() {
+        return this.name === "none"
+    }
+
+    public disableMovementEventListeners() {
+        // Save onmousedown and ontouchstart then set them to null
+        this.eventStore["onmousedown"] = this.tile.onmousedown
+        this.eventStore["ontouchstart"] = this.tile.ontouchstart
+
+        this.tile.onmousedown = null
+        this.tile.ontouchstart = null
+
+        // Remove css class "draggable"
+        this.tile.classList.remove("draggable")
+    }
+
+    public enableMovementEventListeners() {
+        // Restore saved onmousedown and ontouchstart
+        const onMouseDownEvent = this.eventStore["onmousedown"]
+        const onTouchStartEvent = this.eventStore["ontouchstart"]
+
+        if (onMouseDownEvent) {
+            this.tile.onmousedown = onMouseDownEvent
+
+        }
+        if (onTouchStartEvent) {
+            this.tile.ontouchstart = onTouchStartEvent
+        }
+
+        // Add back css class "draggable"
+        this.tile.classList.add("draggable")
     }
 
     // public rotate(byDeg: number) {

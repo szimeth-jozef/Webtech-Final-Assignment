@@ -6,6 +6,7 @@ export default class Board {
     private readonly _pickBoardSize: number
     private _gameBoard: Tile[][]
     private _pickBoard: Tile[]
+    private _isInEditMode: boolean
 
 
     constructor(gameBoardSize: number, pickBoardSize: number) {
@@ -13,12 +14,15 @@ export default class Board {
         this._pickBoardSize = pickBoardSize
         this._pickBoard = new Array(pickBoardSize)
         this._gameBoard = new Array(gameBoardSize)
+        this._isInEditMode = false
 
         for (let i = 0; i < gameBoardSize; i++) {
             this._gameBoard[i] = new Array(gameBoardSize)
         }
     }
 
+
+    //#region [ Getters ]
 
     public get gameBoardSize(): number {
         return this._gameBoardSize
@@ -29,6 +33,15 @@ export default class Board {
         return this._pickBoardSize
     }
 
+
+    public get isInEditMode(): boolean {
+        return this._isInEditMode
+    }
+
+    //#endregion
+
+
+    //#region [ Methods : Public ]
 
     /**
      * Set tile in a matrix grid with [0, 0] in top left corner.
@@ -103,6 +116,47 @@ export default class Board {
     }
 
 
+    public toggleTileMovementControl() {
+        this._isInEditMode = this._isInEditMode ? false : true
+
+        for (const gameBoardRow of this._gameBoard) {
+            for (const tile of gameBoardRow) {
+                if (this._isInEditMode) {
+                    tile.disableMovementEventListeners()
+                }
+                else {
+                    tile.enableMovementEventListeners()
+                }
+            }
+        }
+
+        for (const tile of this._pickBoard) {
+            if (this._isInEditMode) {
+                tile.disableMovementEventListeners()
+            }
+            else {
+                tile.enableMovementEventListeners()
+            }
+        }
+    }
+
+
+    public isEmptyFieldOnBoard(): boolean {
+        for (const gameBoardRow of this._gameBoard) {
+            for (const tile of gameBoardRow) {
+                if (tile.isEmpty())
+                return true
+            }
+        }
+
+        return false
+    }
+
+    //#endregion
+
+
+    //#region [ Methods : Private ]
+
     private replaceTilesFromPickToGame(index: number, pos: Array<number>) {
         const tmp = this.getPickBoardItem(index)
 
@@ -135,6 +189,8 @@ export default class Board {
             position: [parseInt(strPos[0]), parseInt(strPos[1])]
         }
     }
+
+    //#endregion
 
 
     // ==================== DEBUG METHODS ====================
