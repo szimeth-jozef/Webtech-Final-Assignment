@@ -32,8 +32,6 @@
         sprites.define("tree", 4, 1)
         sprites.define("ball", 3, 1)
 
-        setupControls()
-
         const board = createBoard(levelsJsonData, sprites)
 
         // set css variables
@@ -50,6 +48,8 @@
 
         const ballImg = sprites.get("ball", levelsJsonData.tileDimensions)
         const ball = new Ball(board, gameBoardcontainer, ballImg)
+
+        setupControls(ball)
 
         const rollBallButton = document.getElementById("ball-roll")
         rollBallButton.addEventListener("click", event => {

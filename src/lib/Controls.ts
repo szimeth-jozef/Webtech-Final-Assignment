@@ -1,3 +1,5 @@
+import type Ball from "./Ball"
+import { Direction } from "./Ball"
 import type Board from "./Board"
 
 function createKeyboardEvent(type: string, code: string) {
@@ -38,32 +40,35 @@ function setupDeviceOrientationControlsEmitor() {
     })
 }
 
-export function setupControls() {
+export function setupControls(ball: Ball) {
     setupDeviceOrientationControlsEmitor()
-
-    // Temporary patchwork for demonstration purposes
 
     window.addEventListener("keydown", event => {
         switch (event.code) {
             case "ArrowUp":
                 document.getElementById("controls").innerText = "UP"
+                ball.moveBall(Direction.UP)
                 event.preventDefault()
                 break
             case "ArrowDown":
                 document.getElementById("controls").innerText = "DOWN"
+                ball.moveBall(Direction.DOWN)
                 event.preventDefault()
                 break
             case "ArrowRight":
                 document.getElementById("controls").innerText = "RIGHT"
+                ball.moveBall(Direction.RIGHT)
                 event.preventDefault()
                 break
             case "ArrowLeft":
                 document.getElementById("controls").innerText = "LEFT"
+                ball.moveBall(Direction.LEFT)
                 event.preventDefault()
                 break
         }
     })
 
+    // For debug information
     window.addEventListener("keyup", event => {
         if (event.code === "NeutralTilt" ||
             event.code === "ArrowUp" ||
