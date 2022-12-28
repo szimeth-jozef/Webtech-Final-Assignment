@@ -5,6 +5,10 @@
     "levels": [
         {
             "name": "Úloha 1",
+            "positions": {
+                "start": [0, 0],
+                "finish": [3, 2]
+            },
             "pickBoardSize": 7,
             "board": [
                 [
@@ -118,6 +122,10 @@
         },
         {
             "name": "Úloha 2",
+            "positions": {
+                "start": [2, 2],
+                "finish": [5, 3]
+            },
             "pickBoardSize": 5,
             "board": [
                 [
@@ -229,6 +237,10 @@
         },
         {
             "name": "Úloha 3",
+            "positions": {
+                "start": [3, 3],
+                "finish": [0, 3]
+            },
             "pickBoardSize": 5,
             "board": [
                 [
@@ -340,6 +352,10 @@
         },
         {
             "name": "Úloha 4",
+            "positions": {
+                "start": [2, 2],
+                "finish": [1, 2]
+            },
             "pickBoardSize": 6,
             "board": [
                 [
@@ -452,6 +468,10 @@
         },
         {
             "name": "Úloha 5",
+            "positions": {
+                "start": [1, 5],
+                "finish": [0, 2]
+            },
             "pickBoardSize": 5,
             "board": [
                 [

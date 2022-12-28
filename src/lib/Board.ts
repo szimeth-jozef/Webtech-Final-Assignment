@@ -1,20 +1,24 @@
 import { TilesBoard, type TileIdFormat } from "./Tile";
 import type Tile from "./Tile";
+import type { Vec2 } from "../utils/math";
+import type { Positions } from "./Levels";
 
 export default class Board {
     private readonly _gameBoardSize: number
     private readonly _pickBoardSize: number
+    private readonly _gameBoardPositions: Positions
     private _gameBoard: Tile[][]
     private _pickBoard: Tile[]
     private _isInEditMode: boolean
 
 
-    constructor(gameBoardSize: number, pickBoardSize: number) {
+    constructor(gameBoardSize: number, pickBoardSize: number, gameBoardPositions: Positions) {
         this._gameBoardSize = gameBoardSize
         this._pickBoardSize = pickBoardSize
         this._pickBoard = new Array(pickBoardSize)
         this._gameBoard = new Array(gameBoardSize)
         this._isInEditMode = false
+        this._gameBoardPositions = gameBoardPositions
 
         for (let i = 0; i < gameBoardSize; i++) {
             this._gameBoard[i] = new Array(gameBoardSize)
@@ -36,6 +40,16 @@ export default class Board {
 
     public get isInEditMode(): boolean {
         return this._isInEditMode
+    }
+
+
+    public get startIndexPosition(): Vec2 {
+        return this._gameBoardPositions.start.copy()
+    }
+
+
+    public get finishIndexPosition(): Vec2 {
+        return this._gameBoardPositions.finish.copy()
     }
 
     //#endregion

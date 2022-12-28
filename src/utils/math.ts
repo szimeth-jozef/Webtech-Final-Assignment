@@ -31,10 +31,20 @@ export class Vec2 {
         return this
     }
 
+    public multiply(scalar: number) {
+        this._x *= scalar
+        this._y *= scalar
+        return this
+    }
+
     public divide(scalar: number) {
         this._x /= scalar
         this._y /= scalar
         return this
+    }
+
+    public equals(vec: Vec2): boolean {
+        return this._x === vec.x && this._y === vec.y
     }
 
     public static addVecs(a: Vec2, b: Vec2): Vec2 {

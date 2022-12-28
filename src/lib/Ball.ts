@@ -18,7 +18,8 @@ export default class Ball {
     }
 
     public placeBallAtStart() {
-        this._position = new Vec2(0, 0)
+        const startPos = this._board.startIndexPosition.multiply(this._ballTile.width)
+        this._position = startPos
         this._gameBoardElement.appendChild(this._ballTile)
         this.updateBallPositionInDOM()
     }
@@ -28,9 +29,10 @@ export default class Ball {
     }
 
     public isInFinish() {
-        const currentIndexPos = this._position.copy().divide(this._ballTile.width)
-        const currentTile = this._board.getGameBoardItem(currentIndexPos.x, currentIndexPos.y)
-        return currentTile.isFinish()
+        const currentIndexPos = this._position
+            .copy()
+            .divide(this._ballTile.width)
+        return currentIndexPos.equals(this._board.finishIndexPosition)
     }
 
     public moveBall(direction: Direction) {

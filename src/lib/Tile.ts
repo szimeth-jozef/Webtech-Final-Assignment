@@ -48,10 +48,6 @@ export default class Tile {
         return this._name === "none"
     }
 
-    public isFinish() {
-        return this._name === "finish"
-    }
-
     public disableMovementEventListeners() {
         // Save onmousedown and ontouchstart then set them to null
         this.eventStore["onmousedown"] = this._tile.onmousedown

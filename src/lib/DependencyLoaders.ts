@@ -1,11 +1,11 @@
 export function fetchLevels(difficulty: string) {
-    const url = `levels/${difficulty}.json`
+    const url = `game/levels/${difficulty}.json`
 
     return fetchJsonFile(url)
 }
 
 export function fetchTiles(): Promise<TilesData> {
-    const url = "tiles.json"
+    const url = "game/tiles.json"
 
     return fetchJsonFile(url)
 }

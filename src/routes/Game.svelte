@@ -16,7 +16,7 @@
     Promise.all([
         fetchLevels(params.difficulty),
         fetchTiles(),
-        fetchSpriteSheet("spritesheet.png")
+        fetchSpriteSheet("game/spritesheet.png")
     ])
     .then(([levelsJsonData, tilesJsonData, spriteSheetImage]) => {
         loading = false
