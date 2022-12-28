@@ -1,4 +1,4 @@
-export default class Vec2 {
+export class Vec2 {
     private _x: number
     private _y: number
 
@@ -15,14 +15,26 @@ export default class Vec2 {
         return this._y
     }
 
+    public copy(): Vec2 {
+        return new Vec2(this._x, this._y)
+    }
+
     public set(x: number, y: number) {
         this._x = x
         this._y = y
+        return this
     }
 
     public add(vec: Vec2) {
         this._x += vec.x,
         this._y += vec.y
+        return this
+    }
+
+    public divide(scalar: number) {
+        this._x /= scalar
+        this._y /= scalar
+        return this
     }
 
     public static addVecs(a: Vec2, b: Vec2): Vec2 {
@@ -31,4 +43,8 @@ export default class Vec2 {
             a.y + b.y
         )
     }
+}
+
+export function sum(...values: number[]): number {
+    return values.reduce((acc, value) => acc + value, 0)
 }

@@ -26,14 +26,15 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
                 receiver: jsonTile.receiver
             }
 
-            const imgElm = sprites.get(jsonTile.tile, tileDimensions)
+            const imgElm = sprites.getTile(jsonTile.tile, tileDimensions)
             imgElm.setAttribute("id", `${j}-${i}`)
 
             const tile = new Tile(
                 imgElm,
                 jsonTile.orientation,
                 tileProps,
-                jsonTile.tile
+                jsonTile.tile,
+                sprites.getBoundaries(jsonTile.tile)
             )
             board.setGameBoardItem(tile, j, i)
         }
@@ -48,19 +49,21 @@ export function createBoard(levelsData, sprites: SpriteSheet) {
             receiver: jsonTile.receiver
         }
 
-        const imgElm = sprites.get(jsonTile.tile, tileDimensions)
+        const imgElm = sprites.getTile(jsonTile.tile, tileDimensions)
         imgElm.setAttribute("id", i.toString())
 
         const tile = new Tile(
             imgElm,
             jsonTile.orientation,
             tileProps,
-            jsonTile.tile
+            jsonTile.tile,
+            sprites.getBoundaries(jsonTile.tile)
         )
         board.setPickBoardItem(tile, i)
     }
 
     board.printBoardState()
+    board.printBoundaryMap()
 
     return board
 

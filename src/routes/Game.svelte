@@ -2,7 +2,7 @@
     import type { GamePropType } from '../types/props.type'
 
     import { addTileMovementControls, onDeviceorientationHandler, setupControls } from '../lib/Controls'
-    import { fetchLevels, fetchSpriteSheet } from '../lib/DependencyLoaders'
+    import { fetchLevels, fetchTiles, fetchSpriteSheet } from '../lib/DependencyLoaders'
     import SpriteSheet from '../lib/SpriteSheet'
     import Loader from '../components/Loader.svelte'
     import { createBoard } from '../lib/Levels';
@@ -12,26 +12,16 @@
     export let params: GamePropType
 
     let loading = true
-    const SPRITE_SIZE = 60
 
     Promise.all([
         fetchLevels(params.difficulty),
+        fetchTiles(),
         fetchSpriteSheet("spritesheet.png")
     ])
-    .then(([levelsJsonData, spriteSheetImage]) => {
+    .then(([levelsJsonData, tilesJsonData, spriteSheetImage]) => {
         loading = false
 
-        const sprites = new SpriteSheet(spriteSheetImage, SPRITE_SIZE, SPRITE_SIZE)
-        sprites.define("start", 0, 0)
-        sprites.define("finish", 1, 0)
-        sprites.define("straightFixed", 2, 0)
-        sprites.define("straight", 2, 1)
-        sprites.define("cornerFixed", 3, 0)
-        sprites.define("corner", 1, 1)
-        sprites.define("boulder", 4, 0)
-        sprites.define("none", 0, 1)
-        sprites.define("tree", 4, 1)
-        sprites.define("ball", 3, 1)
+        const sprites = SpriteSheet.createFromJson(spriteSheetImage, tilesJsonData)
 
         const board = createBoard(levelsJsonData, sprites)
 
@@ -47,12 +37,12 @@
         board.populateGameBoardContainer(gameBoardcontainer)
         board.populatePickBoardContainer(pickBoardContainer)
 
-        const ballImg = sprites.get("ball", levelsJsonData.tileDimensions)
+        const ballImg = sprites.getTile("ball", levelsJsonData.tileDimensions)
         const ball = new Ball(board, gameBoardcontainer, ballImg)
 
         setupControls(ball)
 
-        const rollBallButton = document.getElementById("ball-roll")
+        const rollBallButton = document.getElementById("game-control-button")
         rollBallButton.addEventListener("click", event => {
             board.toggleTileMovementControl()
 
@@ -87,7 +77,7 @@
 </div>
 
 <div class="game-board"></div>
-<button id="ball-roll" class="game-button__primary" disabled>Roll The Ball</button>
+<button id="game-control-button" class="game-button__primary" disabled>Roll The Ball</button>
 <div class="pick-board-background">
     <div class="pick-board"></div>
 </div>

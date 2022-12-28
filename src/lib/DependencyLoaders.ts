@@ -1,6 +1,16 @@
-export async function fetchLevels(difficulty:string) {
+export function fetchLevels(difficulty: string) {
     const url = `levels/${difficulty}.json`
 
+    return fetchJsonFile(url)
+}
+
+export function fetchTiles(): Promise<TilesData> {
+    const url = "tiles.json"
+
+    return fetchJsonFile(url)
+}
+
+async function fetchJsonFile(url: string) {
     const response = await fetch(url)
     if (response.ok) {
         return await response.json()
@@ -22,4 +32,17 @@ export function fetchSpriteSheet(url: string): Promise<HTMLImageElement> {
         image.onerror = () => reject(`Couldn't load sprite-sheet from [${url}]`)
         image.src = url
     })
+}
+
+// Tiles json interfaces
+export interface TilesData {
+    tileWidth:  number;
+    tileHeight: number;
+    tiles:      JsonTile[];
+}
+
+export interface JsonTile {
+    name:       string;
+    index:      number[];
+    boundaries: boolean[] | null;
 }

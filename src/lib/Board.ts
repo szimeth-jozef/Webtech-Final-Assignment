@@ -87,7 +87,7 @@ export default class Board {
         for (let y = 0; y < this.gameBoardSize; y++) {
             for (let x = 0; x < this.gameBoardSize; x++) {
                 const tile = this.getGameBoardItem(x, y)
-                container.appendChild(tile.getHTMLElement())
+                container.appendChild(tile.tileHTMLElement)
             }
         }
     }
@@ -95,7 +95,7 @@ export default class Board {
     public populatePickBoardContainer(container: Element) {
         for (let i = 0; i < this.pickBoardSize; i++) {
             const tile = this.getPickBoardItem(i)
-            container.appendChild(tile.getHTMLElement())
+            container.appendChild(tile.tileHTMLElement)
         }
     }
 
@@ -203,7 +203,7 @@ export default class Board {
             for (let x = 0; x < gameBoardSize; x++) {
                 const tile = this.getGameBoardItem(x, y)
                 const name = tile ?
-                    `${tile.getName()} - ${tile.getOrientation()}` :
+                    `${tile.name} - ${tile.orientation}` :
                     "uninitialized"
                 tileNames[y].push(name)
             }
@@ -219,7 +219,7 @@ export default class Board {
         for (let i = 0; i < pickBoardSize; i++) {
             const tile = this.getPickBoardItem(i)
             const name = tile ?
-                    `${tile.getName()} - ${tile.getOrientation()}` :
+                    `${tile.name} - ${tile.orientation}` :
                     "uninitialized"
             tileNames.push(name)
         }
@@ -230,5 +230,34 @@ export default class Board {
     printBoardState() {
         this.printGameBoard()
         this.printPickBoard()
+    }
+
+    printBoundaryMap() {
+        let mapBuffer = ""
+
+        const encode = (val: boolean) => val ? "1" : "0"
+
+        for (const gameBoardRow of this._gameBoard) {
+            const lineBuffers = {
+                top: "",
+                mid: "",
+                bottom: "",
+                hr: ""
+            }
+
+            for (const tile of gameBoardRow) {
+                const boundary = tile.boundary
+                lineBuffers.top    += `-${encode(boundary.topBoundary)}-|`
+                lineBuffers.mid    += `${encode(boundary.leftBoundary)}-${encode(boundary.rightBoundary)}|`
+                lineBuffers.bottom += `-${encode(boundary.bottomBoundary)}-|`
+                lineBuffers.hr     += "---|"
+            }
+
+            mapBuffer += lineBuffers.top.slice(0, -1) + "\n"
+            mapBuffer += lineBuffers.mid.slice(0, -1) + "\n"
+            mapBuffer += lineBuffers.bottom.slice(0, -1) + "\n"
+            mapBuffer += lineBuffers.hr.slice(0, -1) + "\n"
+        }
+        console.log(mapBuffer)
     }
 }

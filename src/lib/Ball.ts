@@ -1,4 +1,4 @@
-import Vec2 from "../utils/math";
+import { Vec2 } from "../utils/math";
 import type Board from "./Board";
 
 export default class Ball {
@@ -27,6 +27,12 @@ export default class Ball {
         this._ballTile.remove()
     }
 
+    public isInFinish() {
+        const currentIndexPos = this._position.copy().divide(this._ballTile.width)
+        const currentTile = this._board.getGameBoardItem(currentIndexPos.x, currentIndexPos.y)
+        return currentTile.isFinish()
+    }
+
     public moveBall(direction: Direction) {
         const moveBy = this._ballTile.width
         const boardWidth = moveBy * (this._board.gameBoardSize - 1)
@@ -50,6 +56,26 @@ export default class Ball {
         const newPos = Vec2.addVecs(this._position, dir)
         if (newPos.x < 0 || newPos.x > boardWidth ||
             newPos.y < 0 || newPos.y > boardWidth) {
+            console.log(`Cannot go ${direction}, out of board`)
+            return
+        }
+
+        // Check if it is possible to move this way
+        // First check current tile whether it is possible to go that way, if not return
+        const currentIndexPos = this._position.copy().divide(this._ballTile.width)
+        const currentTile = this._board.getGameBoardItem(currentIndexPos.x, currentIndexPos.y)
+        const currentTileBoundary = currentTile.boundary.getBoundaryByDirection(direction)
+        if (!currentTileBoundary) {
+            console.log(`Current tile's ${direction} is blocked`)
+            return
+        }
+        
+        // Second check next tile whether it is possible to go that way, if not return
+        const nextIndexPos = newPos.copy().divide(this._ballTile.width)
+        const nextTile = this._board.getGameBoardItem(nextIndexPos.x, nextIndexPos.y)
+        const nextTileBondary = nextTile.boundary.getBoundaryByDirection(reverseDirection(direction))
+        if (!nextTileBondary) {
+            console.log(`Next tile's ${direction} is blocked`)
             return
         }
 
@@ -68,4 +94,17 @@ export enum Direction {
     DOWN = "DOWN",
     LEFT = "LEFT",
     RIGHT = "RIGHT",
+}
+
+function reverseDirection(dir: Direction) {
+    switch (dir) {
+        case Direction.UP:
+            return Direction.DOWN
+        case Direction.DOWN:
+            return Direction.UP
+        case Direction.LEFT:
+            return Direction.RIGHT
+        case Direction.RIGHT:
+            return Direction.LEFT
+    }
 }

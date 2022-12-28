@@ -84,7 +84,7 @@ function resetDirectionsExcept(exceptDir: string) {
 export function setupControls(ball: Ball) {
     setupDeviceOrientationControlsEmitor()
 
-    window.addEventListener("keydown", event => {
+    const onKeydownHandler = (event: KeyboardEvent) => {
         if (event.repeat) {
             return
         }
@@ -107,7 +107,17 @@ export function setupControls(ball: Ball) {
                 event.preventDefault()
                 break
         }
-    })
+
+        if (ball.isInFinish()) {
+            window.removeEventListener("keydown", onKeydownHandler)
+            const h1 = document.createElement("h1")
+            h1.textContent = "You won!"
+            h1.style.position = "absolute"
+            document.body.appendChild(h1)
+        }
+    }
+
+    window.addEventListener("keydown", onKeydownHandler)
 }
 
 export function addTileMovementControls(board: Board) {
@@ -121,7 +131,7 @@ function addDesktopTileMovementConstrols(board: Board) {
             const tile = board.getGameBoardItem(j, i)
 
             if (tile.isMovable()) {
-                const tileElement = tile.getHTMLElement()
+                const tileElement = tile.tileHTMLElement
 
                 tileElement.onmousedown = event => {
                     tileOnMouseDownHandle(event, board)
@@ -134,7 +144,7 @@ function addDesktopTileMovementConstrols(board: Board) {
         const tile = board.getPickBoardItem(i)
 
         if (tile.isMovable()) {
-            const tileElement = tile.getHTMLElement()
+            const tileElement = tile.tileHTMLElement
 
             tileElement.onmousedown = event => {
                 tileOnMouseDownHandle(event, board)
@@ -149,7 +159,7 @@ function addMobileTileMovementConstrols(board: Board) {
             const tile = board.getGameBoardItem(j, i)
 
             if (tile.isMovable()) {
-                const tileElement = tile.getHTMLElement()
+                const tileElement = tile.tileHTMLElement
 
                 tileElement.ontouchstart = event => {
                     tileOnTouchStartHandle(event, board)
@@ -162,7 +172,7 @@ function addMobileTileMovementConstrols(board: Board) {
         const tile = board.getPickBoardItem(i)
 
         if (tile.isMovable()) {
-            const tileElement = tile.getHTMLElement()
+            const tileElement = tile.tileHTMLElement
 
             tileElement.ontouchstart = event => {
                 tileOnTouchStartHandle(event, board)
@@ -254,7 +264,7 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
             board.printBoardState()
 
             // 5. Check if every empty tile is filled and if true enable roll button
-            const button = document.getElementById("ball-roll") as HTMLButtonElement
+            const button = document.getElementById("game-control-button") as HTMLButtonElement
             if (board.isEmptyFieldOnBoard()) {
                 button.disabled = true
             }
@@ -346,7 +356,7 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
             board.printBoardState()
 
             // 5. Check if every empty tile is filled and if true enable roll button
-            const button = document.getElementById("ball-roll") as HTMLButtonElement
+            const button = document.getElementById("game-control-button") as HTMLButtonElement
             if (board.isEmptyFieldOnBoard()) {
                 button.disabled = true
             }
