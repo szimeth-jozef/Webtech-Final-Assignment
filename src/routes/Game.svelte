@@ -1,12 +1,13 @@
 <script lang="ts">
     import type { GamePropType } from '../types/props.type'
 
-    import { addTileMovementControls, setupControls } from '../lib/Controls'
+    import { addTileMovementControls, onDeviceorientationHandler, setupControls } from '../lib/Controls'
     import { fetchLevels, fetchSpriteSheet } from '../lib/DependencyLoaders'
     import SpriteSheet from '../lib/SpriteSheet'
     import Loader from '../components/Loader.svelte'
     import { createBoard } from '../lib/Levels';
     import Ball from '../lib/Ball';
+    import { onDestroy } from 'svelte';
 
     export let params: GamePropType
 
@@ -70,12 +71,16 @@
         loading = false
         console.error(`Error loading assests: ${err}`)
     })
+
+    onDestroy(() => {
+        console.log("Game component destroyed")
+        window.removeEventListener("deviceorientation", onDeviceorientationHandler)
+    })
 </script>
 
 
 <Loader {loading} />
 <p>Difficulty: {params.difficulty} | Level 1</p>
-<h2 class="debug-info">DEBUG-INFO[ball-crtl]: <span id="controls">None</span></h2>
 <div id="top-control-panel">
     <button class="game-button__secondary">Nápoveda</button>
     <button class="game-button__secondary">Riešenie</button>
@@ -147,9 +152,5 @@
 
     .game-button__secondary {
         margin: 0 5px;
-    }
-
-    h2.debug-info {
-        margin: 5px 0;
     }
 </style>

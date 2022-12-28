@@ -2,6 +2,14 @@ import type Ball from "./Ball"
 import { Direction } from "./Ball"
 import type Board from "./Board"
 
+const DEVICE_ORIENTATION_RATE_LIMIT = 20
+
+declare global {
+    interface Window {
+        deviceorientaitonratecounts: any
+    }
+}
+
 function createKeyboardEvent(type: string, code: string) {
     return new KeyboardEvent(type, {
         bubbles: true,
@@ -11,72 +19,93 @@ function createKeyboardEvent(type: string, code: string) {
 }
 
 function setupDeviceOrientationControlsEmitor() {
-    window.addEventListener("deviceorientation", event => {
-        const pitch = event.beta
-        const roll = event.gamma
+    window.deviceorientaitonratecounts = {
+        up: null,
+        down: null,
+        left: null,
+        right: null
+    }
 
-        const treshhold = 30
+    window.addEventListener("deviceorientation", onDeviceorientationHandler)
+}
 
-        if (pitch > treshhold + 30) {
-            const event = createKeyboardEvent("keydown", "ArrowDown")
-            document.dispatchEvent(event)
+export function onDeviceorientationHandler(event: DeviceOrientationEvent) {
+    const pitch = event.beta
+    const roll = event.gamma
+
+    const treshhold = 30
+
+    if (pitch > treshhold + 30) {
+        emitDebouncedKeydownEvent("ArrowDown", "down")
+    }
+    else if (pitch < -treshhold + 30) {
+        emitDebouncedKeydownEvent("ArrowUp", "up")
+    }
+    else if (roll > treshhold) {
+        emitDebouncedKeydownEvent("ArrowRight", "right")
+    }
+    else if (roll < -treshhold) {
+        emitDebouncedKeydownEvent("ArrowLeft", "left")
+    }
+    else {
+        // Reset every direction counter
+        const event = createKeyboardEvent("keyup", "NeutralTilt")
+        document.dispatchEvent(event);
+    }
+}
+
+function emitDebouncedKeydownEvent(code: string, dir: string) {
+    // If direction is not set let through
+    if (window.deviceorientaitonratecounts[dir] === null) {
+        window.deviceorientaitonratecounts[dir] = 0
+        const event = createKeyboardEvent("keydown", code)
+        document.dispatchEvent(event)
+    }
+    else {
+        // Reset every direction counter except down
+        resetDirectionsExcept(dir)
+
+        if (++window.deviceorientaitonratecounts[dir] <= DEVICE_ORIENTATION_RATE_LIMIT) {
+            return
         }
-        else if (pitch < -treshhold + 30) {
-            const event = createKeyboardEvent("keydown", "ArrowUp")
-            document.dispatchEvent(event);
-        }
-        else if (roll > treshhold) {
-            const event = createKeyboardEvent("keydown", "ArrowRight")
-            document.dispatchEvent(event);
-        }
-        else if (roll < -treshhold) {
-            const event = createKeyboardEvent("keydown", "ArrowLeft")
-            document.dispatchEvent(event);
-        }
-        else {
-            const event = createKeyboardEvent("keyup", "NeutralTilt")
-            document.dispatchEvent(event);
-        }
-    })
+        window.deviceorientaitonratecounts[dir] = 0
+        const event = createKeyboardEvent("keydown", code)
+        document.dispatchEvent(event)
+    }
+}
+
+function resetDirectionsExcept(exceptDir: string) {
+    if (exceptDir !== "up") window["deviceorientaitonratecounts"].up = null
+    if (exceptDir !== "down") window["deviceorientaitonratecounts"].down = null
+    if (exceptDir !== "left") window["deviceorientaitonratecounts"].left = null
+    if (exceptDir !== "right") window["deviceorientaitonratecounts"].right = null
 }
 
 export function setupControls(ball: Ball) {
     setupDeviceOrientationControlsEmitor()
 
     window.addEventListener("keydown", event => {
+        if (event.repeat) {
+            return
+        }
+
         switch (event.code) {
             case "ArrowUp":
-                document.getElementById("controls").innerText = "UP"
                 ball.moveBall(Direction.UP)
                 event.preventDefault()
                 break
             case "ArrowDown":
-                document.getElementById("controls").innerText = "DOWN"
                 ball.moveBall(Direction.DOWN)
                 event.preventDefault()
                 break
             case "ArrowRight":
-                document.getElementById("controls").innerText = "RIGHT"
                 ball.moveBall(Direction.RIGHT)
                 event.preventDefault()
                 break
             case "ArrowLeft":
-                document.getElementById("controls").innerText = "LEFT"
                 ball.moveBall(Direction.LEFT)
                 event.preventDefault()
                 break
-        }
-    })
-
-    // For debug information
-    window.addEventListener("keyup", event => {
-        if (event.code === "NeutralTilt" ||
-            event.code === "ArrowUp" ||
-            event.code === "ArrowDown" ||
-            event.code === "ArrowRight" ||
-            event.code === "ArrowLeft") {
-            document.getElementById("controls").innerText = "None"
-            event.preventDefault()
         }
     })
 }
