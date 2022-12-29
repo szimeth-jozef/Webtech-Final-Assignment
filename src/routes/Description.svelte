@@ -1,3 +1,8 @@
+<script lang="ts">
+    import arrowsImage from '../assets/arrows.png'
+    import sensorImage from '../assets/mobile_sensor.png'
+</script>
+
 <main>
     <h1>Puzzle Path</h1>
     <p>
@@ -16,8 +21,8 @@
     * Presun políčok: Drag & Drop<br>
     * Pohyb loptičky:
     <div class="flex">
-        <p><img src="src/assets/arrows.png"></p>
-        <p><img src="src/assets/mobile_sensor.png"></p>
+        <p><img src={arrowsImage} alt="keyboard_arrows"></p>
+        <p><img src={sensorImage} alt="mobile_sensor"></p>
     </div>
 </main>
 
