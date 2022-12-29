@@ -51,13 +51,17 @@
             <button on:click={onStartGameButtonClicked}>Začat novú hru</button>
         {/if}
 
-        <select bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
-            {#each difficulties as difficulty}
-                <option value={difficulty.id}>
-                    {difficulty.text}
-                </option>
-            {/each}
-        </select>
+        <div class="selectDiv">
+            <select id="select" bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
+                {#each difficulties as difficulty}
+                    <option value={difficulty.id}>
+                        {difficulty.text}
+                    </option>
+                {/each}
+            </select>
+            <label for="select"> Obtiažnosť</label>
+        </div>
+
     </div>
 
     <button on:click={() => push("/description")}>Popis hry</button>
@@ -65,16 +69,22 @@
 
 
 <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
     h1 {
         font-size: 4.2em;
         line-height: 1.1;
     }
 
     .menu {
+        margin: auto;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        width: 400px;
     }
 
     .play {
@@ -83,12 +93,23 @@
         align-items: center;
         flex-direction: row;
         gap: 0;
+        width: 400px;
     }
 
-    .play * {
+    .play *{
         width: 200px;
     }
 
+    .selectDiv{
+        position: relative;
+    }
+    .selectDiv label{
+        position: absolute;
+        left: 0;
+        top: 25px;
+        font-size: 1.5em;
+        line-height: normal;
+    }
     button, select {
         position: relative;
         width: 400px;
@@ -106,30 +127,23 @@
         line-height: normal;
     }
 
-    button:hover{
+    button:hover, select:hover{
         color: rgba(255, 255, 255, 1);
         box-shadow: 0 0 40px rgba(255, 0, 0, .6);
     }
+    @media screen and (max-width: 480px){
 
-  /* button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
-    color: rgba(255, 255, 255, 0.87);
-  }
-
-  button:hover {
-    border-color: #646cff;
-  }
-
-  button:focus,
-  button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
-  } */
+        h1{
+            font-size: 3.2em;
+        }
+        .play *{
+            width: 150px;
+        }
+        button, .menu {
+            width: 300px;
+        }
+        button, select, .selectDiv label{
+            font-size: 1.2em;
+        }
+    }
 </style>
