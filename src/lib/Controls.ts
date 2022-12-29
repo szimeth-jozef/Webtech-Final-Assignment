@@ -2,8 +2,6 @@ import type Ball from "./Ball"
 import { Direction } from "./Ball"
 import type Board from "./Board"
 
-const DEVICE_ORIENTATION_RATE_LIMIT = 20
-
 declare global {
     interface Window {
         deviceorientaitonratecounts: any
@@ -33,19 +31,20 @@ export function onDeviceorientationHandler(event: DeviceOrientationEvent) {
     const pitch = event.beta
     const roll = event.gamma
 
-    const treshhold = 30
+    const TILT_TRESHOLD = 30
+    const DEBOUNCE_LIMIT_RATE = 20
 
-    if (pitch > treshhold + 30) {
-        emitDebouncedKeydownEvent("ArrowDown", "down")
+    if (pitch > TILT_TRESHOLD + 30) {
+        emitDebouncedKeydownEvent("ArrowDown", "down", DEBOUNCE_LIMIT_RATE)
     }
-    else if (pitch < -treshhold + 30) {
-        emitDebouncedKeydownEvent("ArrowUp", "up")
+    else if (pitch < -TILT_TRESHOLD + 30) {
+        emitDebouncedKeydownEvent("ArrowUp", "up", DEBOUNCE_LIMIT_RATE)
     }
-    else if (roll > treshhold) {
-        emitDebouncedKeydownEvent("ArrowRight", "right")
+    else if (roll > TILT_TRESHOLD) {
+        emitDebouncedKeydownEvent("ArrowRight", "right", DEBOUNCE_LIMIT_RATE)
     }
-    else if (roll < -treshhold) {
-        emitDebouncedKeydownEvent("ArrowLeft", "left")
+    else if (roll < -TILT_TRESHOLD) {
+        emitDebouncedKeydownEvent("ArrowLeft", "left", DEBOUNCE_LIMIT_RATE)
     }
     else {
         // Reset every direction counter
@@ -54,7 +53,7 @@ export function onDeviceorientationHandler(event: DeviceOrientationEvent) {
     }
 }
 
-function emitDebouncedKeydownEvent(code: string, dir: string) {
+function emitDebouncedKeydownEvent(code: string, dir: string, limitRate: number) {
     // If direction is not set let through
     if (window.deviceorientaitonratecounts[dir] === null) {
         window.deviceorientaitonratecounts[dir] = 0
@@ -65,7 +64,7 @@ function emitDebouncedKeydownEvent(code: string, dir: string) {
         // Reset every direction counter except down
         resetDirectionsExcept(dir)
 
-        if (++window.deviceorientaitonratecounts[dir] <= DEVICE_ORIENTATION_RATE_LIMIT) {
+        if (++window.deviceorientaitonratecounts[dir] <= limitRate) {
             return
         }
         window.deviceorientaitonratecounts[dir] = 0
@@ -182,30 +181,56 @@ function addMobileTileMovementConstrols(board: Board) {
     }
 }
 
+function moveElementAt(element: HTMLElement, event: Event) {
+    let pageX: number, pageY: number
+
+    if (event instanceof MouseEvent) {
+        const mouseEvent = event as MouseEvent
+        pageX = mouseEvent.pageX
+        pageY = mouseEvent.pageY
+    }
+    else if (event instanceof TouchEvent) {
+        const touchEvent = event as TouchEvent
+        const primaryTouch = touchEvent.changedTouches[0]
+        pageX = primaryTouch.pageX
+        pageY = primaryTouch.pageY
+    }
+    else {
+        console.warn(`Controls: Not supported event type [${event}}]`)
+    }
+
+    element.style.left = pageX - element.offsetWidth / 2 + 'px'
+    element.style.top = pageY - element.offsetHeight / 2 + 'px'
+}
+
+function createGhostTileForDragging(originalTile: HTMLImageElement) {
+    const ghostElement = originalTile.cloneNode() as HTMLImageElement
+    ghostElement.removeAttribute("id")
+    ghostElement.style.position = "absolute"
+    ghostElement.style.opacity = "0.5"
+    ghostElement.style.cursor = "grabbing"
+    ghostElement.ondragstart = () => false
+
+    // When dragging from pick hide original and when dragging from board leave visible
+    if (originalTile.getAttribute("id").length === 1) {
+        originalTile.style.visibility = "hidden"
+    }
+
+    return ghostElement
+}
+
 function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
     const tileElement = mouseEvent.target as HTMLImageElement
 
-    const tempTileClone = tileElement.cloneNode() as HTMLImageElement
-    tempTileClone.removeAttribute("id")
-    tempTileClone.style.position = "absolute"
-    tempTileClone.style.opacity = "0.5"
-    tempTileClone.style.cursor = "grabbing"
-    tempTileClone.ondragstart = () => false
-    
-    if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "hidden"
+    const tempTileClone = createGhostTileForDragging(tileElement)
     document.body.appendChild(tempTileClone)
 
-    function moveAt(pageX: number, pageY: number) {
-        tempTileClone.style.left = pageX - tempTileClone.offsetWidth / 2 + 'px'
-        tempTileClone.style.top = pageY - tempTileClone.offsetHeight / 2 + 'px'
-    }
+    moveElementAt(tempTileClone, mouseEvent)
 
-    moveAt(mouseEvent.pageX, mouseEvent.pageY)
+    let currentDroppable: Element = null
 
-    let currentDroppable = null
-
-    function onMouseMove(event) {
-        moveAt(event.pageX, event.pageY)
+    function onMouseMove(event: MouseEvent) {
+        moveElementAt(tempTileClone, event)
 
         tempTileClone.hidden = true
         let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
@@ -238,69 +263,24 @@ function tileOnMouseDownHandle(mouseEvent: MouseEvent, board: Board) {
         if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "visible"
         tempTileClone.remove()
 
-        if (currentDroppable) {
-            // Swap currentDroppable with tileElement
-            // 1. swap id's
-            // 2. Remove and/or add some classes idk yet)
-            // 3. swap actual DOM elements
-            // 4. Update board data structure (swap Tile's)
-            // 5. Check if every empty tile is filled and if true enable roll button
-
-            // 1. swap id's
-            const targetId = currentDroppable.getAttribute("id")
-            const draggedId = tileElement.getAttribute("id")
-
-            currentDroppable.setAttribute("id", draggedId)
-            tileElement.setAttribute("id", targetId)
-
-            // 2. Remove and/or add some classes idk yet)
-            currentDroppable.classList.remove("dropzone-hover")
-            tileElement.classList.remove("dropzone-hover")
-
-            // 3. swap actual DOM elements
-            swapHTMLElements(currentDroppable, tileElement)
-
-            // 4. Update board data structure (swap Tile's)
-            board.replaceTiles(targetId, draggedId)
-            board.printBoardState()
-
-            // 5. Check if every empty tile is filled and if true enable roll button
-            const button = document.getElementById("game-control-button") as HTMLButtonElement
-            if (board.isEmptyFieldOnBoard()) {
-                button.disabled = true
-            }
-            else {
-                button.disabled = false
-            }
-        }
+        swapTilesAction(currentDroppable, tileElement, board)
     }
 }
 
 function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
     const tileElement = touchEvent.target as HTMLImageElement
 
-    const tempTileClone = tileElement.cloneNode() as HTMLImageElement
-    tempTileClone.removeAttribute("id")
-    tempTileClone.style.position = "absolute"
-    tempTileClone.style.opacity = "0.5"
-
-    if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "hidden"
+    const tempTileClone = createGhostTileForDragging(tileElement)
     document.body.appendChild(tempTileClone)
 
-    function moveAt(pageX: number, pageY: number) {
-        tempTileClone.style.left = pageX - tempTileClone.offsetWidth / 2 + 'px'
-        tempTileClone.style.top = pageY - tempTileClone.offsetHeight / 2 + 'px'
-    }
+    moveElementAt(tempTileClone, touchEvent)
 
-    const primaryTouch = touchEvent.changedTouches[0]
-    moveAt(primaryTouch.pageX, primaryTouch.pageY)
+    let currentDroppable: Element = null
 
-    let currentDroppable = null
-
-    function onMouseMove(event) {
+    function onTouchMove(event: TouchEvent) {
+        moveElementAt(tempTileClone, event)
+        
         const primaryTouch = event.changedTouches[0]
-        moveAt(primaryTouch.pageX, primaryTouch.pageY)
-
         tempTileClone.hidden = true
         let elemBelow = document.elementFromPoint(primaryTouch.clientX, primaryTouch.clientY)
         tempTileClone.hidden = false
@@ -321,54 +301,59 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
     }
 
     // (2) move the tile on mousemove
-    document.addEventListener('touchmove', onMouseMove)
+    document.addEventListener('touchmove', onTouchMove)
 
     // (3) drop the tile, remove unneeded handlers
     tileElement.ontouchend = function() {
-        document.removeEventListener('touchmove', onMouseMove)
+        document.removeEventListener('touchmove', onTouchMove)
         tileElement.ontouchend = null
         if (tileElement.getAttribute("id").length === 1) tileElement.style.visibility = "visible"
         tempTileClone.remove()
 
-        if (currentDroppable) {
-            // Swap currentDroppable with tileElement
-            // 1. swap id's
-            // 2. Remove and/or add some classes idk yet)
-            // 3. swap actual DOM elements
-            // 4. Update board data structure (swap Tile's)
-            // 5. Check if every empty tile is filled and if true enable roll button
-
-            // 1. swap id's
-            const targetId = currentDroppable.getAttribute("id")
-            const draggedId = tileElement.getAttribute("id")
-
-            currentDroppable.setAttribute("id", draggedId)
-            tileElement.setAttribute("id", targetId)
-
-            // 2. Remove and/or add some classes idk yet)
-            currentDroppable.classList.remove("dropzone-hover")
-            tileElement.classList.remove("dropzone-hover")
-
-            // 3. swap actual DOM elements
-            swapHTMLElements(currentDroppable, tileElement)
-
-            // 4. Update board data structure (swap Tile's)
-            board.replaceTiles(targetId, draggedId)
-            board.printBoardState()
-
-            // 5. Check if every empty tile is filled and if true enable roll button
-            const button = document.getElementById("game-control-button") as HTMLButtonElement
-            if (board.isEmptyFieldOnBoard()) {
-                button.disabled = true
-            }
-            else {
-                button.disabled = false
-            }
-        }
+        swapTilesAction(currentDroppable, tileElement, board)
     }
 }
 
-function swapHTMLElements(node1: HTMLElement, node2: HTMLElement) {
+function swapTilesAction(targeted: Element, dragged: Element, board: Board) {
+    if (!targeted) {
+        return
+    }
+
+    // Swap targeted with dragged tile
+    // 1. swap id's
+    // 2. Remove and/or add some classes idk yet)
+    // 3. swap actual DOM elements
+    // 4. Update board data structure (swap Tile's)
+    // 5. Check if every empty tile is filled and if true enable roll button
+
+    // 1. swap id's
+    const targetId = targeted.getAttribute("id")
+    const draggedId = dragged.getAttribute("id")
+    targeted.setAttribute("id", draggedId)
+    dragged.setAttribute("id", targetId)
+
+    // 2. Remove and/or add some classes idk yet)
+    targeted.classList.remove("dropzone-hover")
+    dragged.classList.remove("dropzone-hover")
+
+    // 3. swap actual DOM elements
+    swapHTMLElements(targeted, dragged)
+
+    // 4. Update board data structure (swap Tile's)
+    board.replaceTiles(targetId, draggedId)
+    board.printBoardState()
+
+    // 5. Check if every empty tile is filled and if true enable roll button
+    const button = document.getElementById("game-control-button") as HTMLButtonElement
+    if (board.isEmptyFieldOnBoard()) {
+        button.disabled = true
+    }
+    else {
+        button.disabled = false
+    }
+}
+
+function swapHTMLElements(node1: Element, node2: Element) {
     let afterNode2 = node2.nextElementSibling;
     const parent = node2.parentNode;
     node1.replaceWith(node2);
