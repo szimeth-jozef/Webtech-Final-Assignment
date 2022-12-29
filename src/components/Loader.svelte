@@ -1,12 +1,9 @@
 <script lang="ts">
-    export let loading: boolean
 </script>
 
-{#if loading}
-    <div class="loader-container">
-        <div class="loader"></div>
-    </div>
-{/if}
+<div class="loader-container">
+    <div class="loader"></div>
+</div>
 
 <style>
     .loader {

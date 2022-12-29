@@ -3,11 +3,7 @@ import Board from "./Board"
 import type SpriteSheet from "./SpriteSheet"
 import Tile, { type TileProperties } from "./Tile"
 
-export function createBoard(levelsData, sprites: SpriteSheet, level: number) {
-    const gameBoardSize: number = levelsData.gameBoardSizes
-    const tileDimensions: number = levelsData.tileDimensions
-
-    const levelData = levelsData.levels[level]
+export function createBoard(levelData: JsonLevel, sprites: SpriteSheet, gameBoardSize: number, tileDimensions: number) {
     const pickBoardSize: number = levelData.pickBoardSize
 
     const positions: Positions =  {

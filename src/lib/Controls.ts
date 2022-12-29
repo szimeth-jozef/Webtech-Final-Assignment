@@ -1,3 +1,4 @@
+import { levelState } from "../stores/LevelStore"
 import type Ball from "./Ball"
 import { Direction } from "./Ball"
 import type Board from "./Board"
@@ -109,11 +110,13 @@ export function setupControls(ball: Ball) {
 
         if (ball.isInFinish()) {
             window.removeEventListener("keydown", onKeydownHandler)
-            const h1 = document.createElement("h1")
-            h1.textContent = "You won!"
-            h1.style.position = "absolute"
-            document.body.appendChild(h1)
-            // TODO: SOMEHOW GET HERE levelServer current level and call finishLevel(level)
+            // TODO: Somehow I should call levelServer.finish()
+            levelState.update((lvlState) => {
+                lvlState.isFinished = true
+                lvlState.isTileMovementEnabled = false
+                lvlState.isLevelControlButtonDisabled = true
+                return lvlState
+            })
         }
     }
 
@@ -344,12 +347,17 @@ function swapTilesAction(targeted: Element, dragged: Element, board: Board) {
     board.printBoardState()
 
     // 5. Check if every empty tile is filled and if true enable roll button
-    const button = document.getElementById("game-control-button") as HTMLButtonElement
     if (board.isEmptyFieldOnBoard()) {
-        button.disabled = true
+        levelState.update((lvlState) => {
+            lvlState.isLevelControlButtonDisabled = true
+            return lvlState
+        })
     }
     else {
-        button.disabled = false
+        levelState.update((lvlState) => {
+            lvlState.isLevelControlButtonDisabled = false
+            return lvlState
+        })
     }
 }
 

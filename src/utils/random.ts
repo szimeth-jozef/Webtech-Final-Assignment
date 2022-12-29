@@ -4,6 +4,10 @@ export function randint(a: number, b: number): number {
 }
 
 export function randchoice(pool: Array<any>) {
+    if (pool.length === 0) {
+        return null
+    }
+
     const randIndex = randint(0, pool.length - 1)
     return pool[randIndex]
 }
