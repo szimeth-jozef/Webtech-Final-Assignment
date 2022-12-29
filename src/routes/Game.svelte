@@ -79,7 +79,7 @@
 
 
 <Loader {loading} />
-<p>Difficulty: {params.difficulty} | Level {level+1}</p>
+<p>Difficulty: {params.difficulty} | Level {level}</p>
 <div id="top-control-panel">
     <button class="game-button__secondary">Nápoveda</button>
     <button class="game-button__secondary">Riešenie</button>
