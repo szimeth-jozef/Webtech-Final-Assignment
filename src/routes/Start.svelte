@@ -1,116 +1,126 @@
 <script lang="ts">
-  import svelteLogo from '../assets/svelte.svg'
-  import { push } from 'svelte-spa-router'
-  import { isMobileBrowser } from '../utils/platform'
+    import { push } from 'svelte-spa-router'
+    import CacheHandler from '../lib/CacheHandler';
+    import type { Difficulty } from '../types/game.type';
+    import { isMobileBrowser } from '../utils/platform'
 
-  interface Difficulty {
-    id: string,
-    text: string
-  }
-
-  const difficulties: Array<Difficulty> = [
-    { id:"easy", text: "Ľahká" },
-    { id:"hard", text: "Ťažká" }
-  ]
-
-  let selected: Difficulty
-
-  async function lockScreenToPortrait() {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen()
+    interface DifficultyOption {
+        id: Difficulty,
+        text: string
     }
-    return await screen.orientation.lock("portrait")
-  }
 
-  function onStartGameButtonClicked() {
-    if (isMobileBrowser()) {
-      lockScreenToPortrait()
-        .then(() => {
-            console.log("Screen locked to portrait.")
-            document.getElementById("screen-lock").innerText = "Screen locked to portrait."
-            push(`/game/${selected.id}`)
-          })
-        .catch(err => {
-          console.error(`Failed locking the screen to portrait: ${err}`)
-          document.getElementById("screen-lock").innerText = `Failed locking the screen to portrait: ${err}`
-        })
+    const difficulties: Array<DifficultyOption> = [
+        { id:"easy", text: "Ľahká" },
+        { id:"hard", text: "Ťažká" }
+    ]
+
+    let selectedDifficulty: Difficulty = "easy"
+    let isDataCached: boolean
+
+    const cacheHandler = new CacheHandler(selectedDifficulty)
+    isDataCached = cacheHandler.readCache()
+
+    async function lockScreenToPortrait() {
+        if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen()
+        }
+        return await screen.orientation.lock("portrait")
     }
-    else {
-      push(`/game/${selected.id}`)
+
+    function onStartGameButtonClicked() {
+        if (isMobileBrowser()) {
+            lockScreenToPortrait()
+                .then(() => {
+                    console.log("Screen locked to portrait.")
+                    push(`/game/${selectedDifficulty}`)
+                })
+                .catch(err => {
+                    console.error(`Failed locking the screen to portrait: ${err}`)
+                })
+        }
+        else {
+            push(`/game/${selectedDifficulty}`)
+        }
     }
-  }
+
+    function onDifficultySelectChange() {
+        cacheHandler.difficulty = selectedDifficulty
+        isDataCached = cacheHandler.readCache()
+    }
 
 </script>
 
-<main>
-  <h1>Puzzle Path</h1>
-  <h2 id="screen-lock">x</h2>
-  <button on:click={onStartGameButtonClicked}>Začat novú hru</button>
 
-  <select bind:value={selected}>
-    {#each difficulties as difficulty}
-      <option value={difficulty}>
-        {difficulty.text}
-      </option>
-    {/each}
-  </select>
+<h1>Puzzle Path</h1>
+<div class="menu">
+    <div class="play">
+        {#if isDataCached}
+            <button on:click={onStartGameButtonClicked}>Pokračovať v hre</button>
+        {:else}
+            <button on:click={onStartGameButtonClicked}>Začat novú hru</button>
+        {/if}
 
-  <button on:click={() => push("/description")}>Popis hry</button>
-
-  <div>
-      <a href="https://vitejs.dev" target="_blank" rel="noreferrer"> 
-        <img src="./vite.svg" class="logo" alt="Vite Logo" />
-      </a>
-      <a href="https://svelte.dev" target="_blank" rel="noreferrer"> 
-        <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-      </a>
+        <select bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
+            {#each difficulties as difficulty}
+                <option value={difficulty.id}>
+                    {difficulty.text}
+                </option>
+            {/each}
+        </select>
     </div>
-    <h1>Vite + Svelte</h1>
 
-    <p>
-      Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-    </p>
+    <button on:click={() => push("/description")}>Popis hry</button>
+</div>
 
-    <p class="read-the-docs">
-      Click on the Vite and Svelte logos to learn more
-    </p>
-</main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-  }
+    h1 {
+        font-size: 4.2em;
+        line-height: 1.1;
+    }
 
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
+    .menu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
+    .play {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 0;
+    }
 
-  .read-the-docs {
-    color: #888;
-  }
+    .play * {
+        width: 200px;
+    }
 
-  a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-  }
+    button, select {
+        position: relative;
+        width: 400px;
+        height: 100px;
+        margin: 20px 0;
+        letter-spacing: 2px;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align: center;
+        color: white;
+        border: 2px solid #ec1840;
+        background: #242424;
+        font-size: 1.5em;
+        font-weight: bold;
+        line-height: normal;
+    }
 
-  a:hover {
-    color: #535bf2;
-  }
+    button:hover{
+        color: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 40px rgba(255, 0, 0, .6);
+    }
 
-  h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-  }
-
-  button {
+  /* button {
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
@@ -130,5 +140,5 @@
   button:focus,
   button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
-  }
+  } */
 </style>

@@ -8,10 +8,12 @@
     import { createBoard } from '../lib/Levels';
     import Ball from '../lib/Ball';
     import { onDestroy } from 'svelte';
+    import LevelServer from '../lib/LevelServer';
 
     export let params: GamePropType
 
     let loading = true
+    let level: number
 
     Promise.all([
         fetchLevels(params.difficulty),
@@ -23,7 +25,14 @@
 
         const sprites = SpriteSheet.createFromJson(spriteSheetImage, tilesJsonData)
 
-        const board = createBoard(levelsJsonData, sprites)
+        const allLevels = levelsJsonData.levels.map((_: any, index: number) => index)
+        const levelServer = new LevelServer(params.difficulty, allLevels)
+        level = levelServer.nextLevel()
+
+        // Dummy save, even tho it should be finished after player completed the given level
+        levelServer.finishLevel(level)
+
+        const board = createBoard(levelsJsonData, sprites, level)
 
         // set css variables
         const root = document.documentElement
@@ -70,7 +79,7 @@
 
 
 <Loader {loading} />
-<p>Difficulty: {params.difficulty} | Level 1</p>
+<p>Difficulty: {params.difficulty} | Level {level}</p>
 <div id="top-control-panel">
     <button class="game-button__secondary">Nápoveda</button>
     <button class="game-button__secondary">Riešenie</button>

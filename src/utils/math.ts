@@ -58,3 +58,7 @@ export class Vec2 {
 export function sum(...values: number[]): number {
     return values.reduce((acc, value) => acc + value, 0)
 }
+
+export function subtractArrays(minuend: number[], subtrahend: number[]): number[] {
+    return minuend.filter(value => !subtrahend.includes(value))
+}

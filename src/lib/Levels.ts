@@ -1,17 +1,13 @@
-// TODO: if cached level continue with that
-// else get random level (FOR DEBUG IT IS ALWAYS THE FIRST LEVEL)
-
 import { Vec2 } from "../utils/math"
 import Board from "./Board"
 import type SpriteSheet from "./SpriteSheet"
 import Tile, { type TileProperties } from "./Tile"
 
-export function createBoard(levelsData, sprites: SpriteSheet) {
+export function createBoard(levelsData, sprites: SpriteSheet, level: number) {
     const gameBoardSize: number = levelsData.gameBoardSizes
     const tileDimensions: number = levelsData.tileDimensions
 
-    // TODO: should be random, not hardcoded
-    const levelData = levelsData.levels[0]
+    const levelData = levelsData.levels[level]
     const pickBoardSize: number = levelData.pickBoardSize
 
     const positions: Positions =  {
