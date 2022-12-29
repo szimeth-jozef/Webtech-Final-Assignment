@@ -34,6 +34,7 @@ export default class LevelServer {
         if (this._availableLevels.length === 0) {
             // No more available levels
             this._cacheHandler.clearCache()
+            this._availableLevels = [...this._allLevels]
         }
         else {
             // Store finished level

@@ -2,17 +2,9 @@
     import { push } from 'svelte-spa-router'
     import CacheHandler from '../lib/CacheHandler';
     import type { Difficulty } from '../types/game.type';
+    import { difficulties } from '../utils/difficulty';
     import { isMobileBrowser } from '../utils/platform'
 
-    interface DifficultyOption {
-        id: Difficulty,
-        text: string
-    }
-
-    const difficulties: Array<DifficultyOption> = [
-        { id:"easy", text: "Ľahká" },
-        { id:"hard", text: "Ťažká" }
-    ]
 
     let selectedDifficulty: Difficulty = "easy"
     let isDataCached: boolean
@@ -47,7 +39,6 @@
         cacheHandler.difficulty = selectedDifficulty
         isDataCached = cacheHandler.readCache()
     }
-
 </script>
 
 
