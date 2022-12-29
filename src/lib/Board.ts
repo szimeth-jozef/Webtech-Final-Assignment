@@ -127,6 +127,12 @@ export default class Board {
         else if (fromPos.tileAt === TilesBoard.Game && toPos.tileAt === TilesBoard.Pick) {
             this.replaceTilesFromPickToGame(toPos.index, fromPos.position)
         }
+        else if (fromPos.tileAt === TilesBoard.Pick && toPos.tileAt === TilesBoard.Pick) {
+            this.replaceTilesFromPickToPick(fromPos.index, toPos.index)
+        }
+        else {
+            console.warn("Board: Invalid replacement type")
+        }
     }
 
 
@@ -170,6 +176,14 @@ export default class Board {
 
 
     //#region [ Methods : Private ]
+
+    private replaceTilesFromPickToPick(indexFrom: number, indexTo: number) {
+        const tmp = this.getPickBoardItem(indexFrom)
+
+        this.setPickBoardItem(this.getPickBoardItem(indexTo), indexFrom)
+        this.setPickBoardItem(tmp, indexTo)
+    }
+
 
     private replaceTilesFromPickToGame(index: number, pos: Array<number>) {
         const tmp = this.getPickBoardItem(index)

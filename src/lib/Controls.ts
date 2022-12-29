@@ -369,10 +369,14 @@ function tileOnTouchStartHandle(touchEvent: TouchEvent, board: Board) {
 }
 
 function swapHTMLElements(node1: HTMLElement, node2: HTMLElement) {
-    const afterNode2 = node2.nextElementSibling;
+    let afterNode2 = node2.nextElementSibling;
     const parent = node2.parentNode;
     node1.replaceWith(node2);
-    parent.insertBefore(node1, afterNode2);
+    if (afterNode2 !== null && afterNode2.isEqualNode(node1)) {
+        parent.insertBefore(node1, node2)
+        return
+    }
+    parent.insertBefore(node1, afterNode2)
 }
 
 function enterDroppable(elem) {
