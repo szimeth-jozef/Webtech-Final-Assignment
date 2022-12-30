@@ -1,32 +1,46 @@
 <script lang="ts">
+    import GameControls from "./GameControls.svelte";
     import { onDestroy, onMount } from "svelte";
+    import { createEventDispatcher } from "svelte";
     import Ball from "../lib/Ball";
-    import type Board from "../lib/Board";
     import { addTileMovementControls, setupControls } from "../lib/Controls";
     import { createBoard } from "../lib/Levels";
-    import type SpriteSheet from "../lib/SpriteSheet";
-    import { currentLevel, type GameLevel } from "../stores/GameStore";
+    import { gameState, type GameState } from "../stores/GameStore";
     import { levelState } from "../stores/LevelStore";
+    import { MainButtonAction, mainButtonState } from "../stores/MainLevelControlButtonStore";
     import { difficultyTranslation } from "../utils/difficulty";
+    import type Board from "../lib/Board";
+    import type SpriteSheet from "../lib/SpriteSheet";
+    import type { LevelDetails } from "../types/game.type";
 
-    export let difficulty: string
-    export let gameBoardSize: number
-    export let tileDimensions: number
+    export let levelDetails: LevelDetails
     export let sprites: SpriteSheet
 
     let level: number
     let board: Board
     let ball: Ball
-    let controlButtonText = "Položiť loptu"
-    let isControlButtonDisabled: boolean
     let isLevelFinished: boolean
+    let isLevelLast: boolean
+    let winnerMessageText: string
 
-    const onLevelChange = (lvl: GameLevel) => {
-        level = lvl.number
+    const dispatch = createEventDispatcher()
+
+    const onLevelChange = (lvl: GameState) => {
+        if (document.querySelector(".game-board") === null ||
+            document.querySelector(".pick-board") === null) {
+            return
+        }
+        level = lvl.levelNumber
+        isLevelLast = lvl.isLevelLast
+        winnerMessageText = lvl.isLevelLast ? "Vyhral si!" : "Hotovo!"
+
         levelState.set({
             isFinished: false,
-            isTileMovementEnabled: true,
-            isLevelControlButtonDisabled: true
+            isTileMovementEnabled: true
+        })
+        mainButtonState.set({
+            isDisabled: true,
+            buttonAction: MainButtonAction.BallRoll
         })
 
         const gameBoardContainer: HTMLDivElement = document.querySelector(".game-board")
@@ -36,66 +50,63 @@
         gameBoardContainer.innerHTML = ""
         pickBoardContainer.innerHTML = ""
 
-        board = createBoard(lvl.data, sprites, gameBoardSize, tileDimensions)
+        board = createBoard(lvl.levelData, sprites, levelDetails.gameBoardSize, levelDetails.tileDimensions)
         addTileMovementControls(board)
 
         board.populateGameBoardContainer(gameBoardContainer)
         board.populatePickBoardContainer(pickBoardContainer)
 
-        const ballImg = sprites.getTile("ball", tileDimensions)
+        const ballImg = sprites.getTile("ball", levelDetails.tileDimensions)
         ball = new Ball(board, gameBoardContainer, ballImg)
         setupControls(ball)
     }
 
-    const onLevelControlButtonClicked = () => {
-        board.toggleTileMovementControl()
-
-        if (board.isInEditMode) {
-            ball.placeBallAtStart()
-            controlButtonText = "Editovať"
-        }
-        else {
-            controlButtonText = "Položiť loptu"
-            ball.removeBallFromBoard()
-        }
-    }
-
     onMount(() => {
-        currentLevel.subscribe(onLevelChange)
-            levelState.subscribe((lvlState) => {
-            isControlButtonDisabled = lvlState.isLevelControlButtonDisabled
+        gameState.subscribe(onLevelChange)
+
+        levelState.subscribe(lvlState => {
             isLevelFinished = lvlState.isFinished
+
+            if (lvlState.isFinished) {
+                dispatch("levelfinished", { level })
+                return
+            }
+
+            if (lvlState.isTileMovementEnabled) {
+                board.enableTileMovementControl()
+                ball.removeBallFromBoard()
+            }
+            else {
+                board.disableTileMovementControl()
+                ball.placeBallAtStart()
+            }
         })
 
         // Set css variables
         const root = document.documentElement
-        root.style.setProperty("--game-board-grid-size", gameBoardSize.toString())
-        root.style.setProperty("--game-board-grid-item-size", `${tileDimensions}px`)
+        root.style.setProperty("--game-board-grid-size", levelDetails.gameBoardSize.toString())
+        root.style.setProperty("--game-board-grid-item-size", `${levelDetails.tileDimensions}px`)
     })
 
     onDestroy(() => {
-        console.log("Level destroyed")
+        console.log("LevelComponent: Destroyed")
     })
 </script>
 
 
-<p>Obtiažnosť: {difficultyTranslation[difficulty]} | Úloha {level + 1}</p>
+<p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]} | Úloha {level + 1}</p>
 <div id="top-control-panel">
     <button class="game-button__secondary">Nápoveda</button>
     <button class="game-button__secondary">Riešenie</button>
 </div>
 <div class="game-board__overlay">
     {#if isLevelFinished}
-        <h1 class="game-board__message">Hotovo!</h1>
+        <h1 class="game-board__message">{winnerMessageText}</h1>
     {/if}
     <div class="game-board">
     </div>
 </div>
-<button class="game-button__primary"
-        disabled={isControlButtonDisabled}
-        on:click={onLevelControlButtonClicked}>
-    {controlButtonText}
-</button>
+<GameControls {isLevelLast} on:nextlevel />
 <div class="pick-board-background">
     <div class="pick-board"></div>
 </div>
@@ -146,6 +157,7 @@
         margin: 0;
         font-size: 3rem;
         font-weight: 900;
+        white-space: nowrap;
 
         /* Fall back for text-stroke
         text-shadow:
@@ -176,11 +188,6 @@
         margin: 0 auto;
         gap: 0.5rem;
         padding: 14px 0;
-    }
-
-    .game-button__primary {
-        margin: 1.5rem 0.5rem;
-        padding: 5px 7px;
     }
 
     .game-button__secondary {

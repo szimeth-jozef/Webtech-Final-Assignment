@@ -22,9 +22,9 @@ export default class LevelServer {
         return randchoice(this._availableLevels)
     }
 
-    public finishLevel(level: number) {
+    public finishLevel(level: number): void {
         if (!this._availableLevels.includes(level)) {
-            console.warn("LevelServer: Attempt to finish a level that was not available")
+            console.warn(`LevelServer: Attempt to finish level [${level}], but it is not available`)
             return
         }
 
@@ -43,4 +43,7 @@ export default class LevelServer {
         }
     }
 
+    public isLastLevel(): boolean {
+        return this._availableLevels.length === 1
+    }
 }

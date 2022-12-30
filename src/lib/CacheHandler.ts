@@ -32,6 +32,7 @@ export default class CacheHandler {
     }
 
     public writeCache() {
+        console.log(`[DEBUG]: cache written - {${this._difficulty}: ${JSON.stringify(this._cacheData)}}`)
         window.localStorage.setItem(
             this._difficulty,
             JSON.stringify(this._cacheData)
