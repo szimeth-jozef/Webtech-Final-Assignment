@@ -94,8 +94,8 @@
 </script>
 
 
-<p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]} | Úloha {level + 1}</p>
 <div id="top-control-panel">
+    <p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]}</p>
     <button class="game-button__secondary">Nápoveda</button>
     <button class="game-button__secondary">Riešenie</button>
 </div>
@@ -117,7 +117,7 @@
         --game-board-grid-size: 6;  /* Set from JS */
         --game-board-grid-item-size: 60px;  /* Set from JS */
         --pick-board-grid-size: 5;  /* Fixed to 5 for now */
-        --pick-board-background-color: brown;
+        --pick-board-background-color: #dd571c;
     }
 
     :global(img.draggable) {
@@ -128,6 +128,11 @@
     :global(img.dropzone-hover) {
         filter: sepia(0.75);
         transition: 0.25s filter ease;
+    }
+
+    p {
+        margin: 0;
+        padding: 1rem 0;
     }
 
     #top-control-panel {
@@ -158,13 +163,7 @@
         font-size: 3rem;
         font-weight: 900;
         white-space: nowrap;
-
-        /* Fall back for text-stroke
-        text-shadow:
-            -1px -1px 0 #000,
-             1px -1px 0 #000,
-            -1px 1px 0 #000,
-             1px 1px 0 #000; */
+        font-family: Arial, Helvetica;
 
         -webkit-text-stroke: 2px black;
         -webkit-text-fill-color: white;

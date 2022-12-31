@@ -17,7 +17,7 @@
             difficultyFinished: "Opakovať obtiažnosť"
         }
     }
-    buttonTranslations.mainButton[MainButtonAction.BallRoll] = "Položiť loptu"
+    buttonTranslations.mainButton[MainButtonAction.BallRoll] = "Položiť loptičku"
     buttonTranslations.mainButton[MainButtonAction.EditBoard] = "Editovať"
 
     let showMainControls: boolean

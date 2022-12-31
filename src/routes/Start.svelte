@@ -42,108 +42,118 @@
 </script>
 
 
-<h1>Puzzle Path</h1>
-<div class="menu">
-    <div class="play">
+<main class="page-container">
+    <h1>Puzzle Path</h1>
+    <button class="learn-more" on:click={onStartGameButtonClicked}>
         {#if isDataCached}
-            <button on:click={onStartGameButtonClicked}>Pokračovať v hre</button>
+            Pokračovať v hre
         {:else}
-            <button on:click={onStartGameButtonClicked}>Začat novú hru</button>
+            Začat novú hru
         {/if}
+    </button>
 
-        <div class="selectDiv">
-            <select id="select" bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
-                {#each difficulties as difficulty}
-                    <option value={difficulty.id}>
-                        {difficulty.text}
-                    </option>
-                {/each}
-            </select>
-            <label for="select"> Obtiažnosť</label>
-        </div>
-
+    <div class="selectDiv">
+        <label for="difficulty-select"> Obtiažnosť</label>
+        <select id="difficulty-select" bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
+            {#each difficulties as difficulty}
+                <option value={difficulty.id}>
+                    {difficulty.text}
+                </option>
+            {/each}
+        </select>
     </div>
 
-    <button on:click={() => push("/description")}>Popis hry</button>
-</div>
+<button class="learn-more" on:click={() => push("/description")}>Popis hry</button>
+</main>
 
 
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-    }
-    h1 {
-        font-size: 4.2em;
-        line-height: 1.1;
-    }
-
-    .menu {
-        margin: auto;
+    main {
         display: flex;
-        justify-content: center;
-        align-items: center;
         flex-direction: column;
-        width: 400px;
-    }
-
-    .play {
-        display: flex;
-        justify-content: center;
         align-items: center;
-        flex-direction: row;
-        gap: 0;
-        width: 400px;
+        justify-content: center;
+        min-height: 100vh;
     }
 
-    .play *{
-        width: 200px;
-    }
-
-    .selectDiv{
-        position: relative;
-    }
-    .selectDiv label{
-        position: absolute;
-        left: 0;
-        top: 25px;
-        font-size: 1.5em;
-        line-height: normal;
-    }
-    button, select {
-        position: relative;
-        width: 400px;
-        height: 100px;
-        margin: 20px 0;
-        letter-spacing: 2px;
-        text-decoration: none;
-        text-transform: uppercase;
+    h1 {
+        font-size: 3em;
+        line-height: 1.1;
+        font-family: 'Press Start 2P', cursive;
         text-align: center;
+    }
+
+    button {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 0;
+        vertical-align: middle;
+        text-decoration: none;
+        font-size: inherit;
+        font-family: inherit;
+        margin-bottom: 1rem;
+        max-width: 375px;
+        min-width: 224px;
+    }
+
+    button.learn-more {
+        font-weight: 600;
         color: white;
-        border: 2px solid #ec1840;
-        background: #242424;
-        font-size: 1.5em;
-        font-weight: bold;
-        line-height: normal;
+        text-transform: uppercase;
+        padding: 1.25em 2em;
+        background: #DD571C;
+        border: 2px solid white;
+        border-radius: 0.75em;
+        transform-style: preserve-3d;
+        transition: transform 100ms cubic-bezier(0, 0, 0.58, 1),
+                    background 100ms cubic-bezier(0, 0, 0.58, 1);
     }
 
-    button:hover, select:hover{
-        color: rgba(255, 255, 255, 1);
-        box-shadow: 0 0 40px rgba(255, 0, 0, .6);
+    button.learn-more::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #903812;
+        border-radius: inherit;
+        transform: translate3d(0, 0.75em, -1em);
+        transition: transform 100ms cubic-bezier(0, 0, 0.58, 1);
     }
-    @media screen and (max-width: 480px){
 
-        h1{
-            font-size: 3.2em;
+    button.learn-more:hover {
+        background: #ff8220;
+        transform: translate(0, 0.25em);
+    }
+    button.learn-more:hover::before {
+        transform: translate3d(0, 0.5em, -1em);
+    }
+    button.learn-more:active {
+        background: #ff8220;
+        transform: translate(0em, 0.75em);
+    }
+    button.learn-more:active::before {
+        transform: translate3d(0, 0, -1em);
+    }
+
+    /* Tablet */
+    @media screen and (max-width: 768px) {
+        h1 {
+            padding: 2.5rem 0;
+            font-size: 2.5rem;
         }
-        .play *{
-            width: 150px;
-        }
-        button, .menu {
-            width: 300px;
-        }
-        button, select, .selectDiv label{
-            font-size: 1.2em;
-        }
+    }
+
+    /* Mobile devices */
+    @media screen and (max-width: 480px) {
+        /* h1 {
+            padding: 2rem 0;
+            font-size: 1.55rem;
+        } */
     }
 </style>

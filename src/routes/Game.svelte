@@ -4,6 +4,7 @@
 
     import Loader from '../components/Loader.svelte'
     import Level from '../components/Level.svelte'
+    import NavBar from '../components/NavBar.svelte';
 
     import { onDeviceorientationHandler } from '../lib/Controls'
     import { fetchLevels, fetchTiles, fetchSpriteSheet } from '../lib/DependencyLoaders'
@@ -19,6 +20,7 @@
     let sprites: SpriteSheet
     let levelServer: LevelServer
     let jsonLevelsArray: Array<any>
+    let level: number
 
     Promise.all([
         fetchLevels(params.difficulty),
@@ -30,7 +32,7 @@
 
         const allLevels = levelsJsonData.levels.map((_: any, index: number) => index)
         levelServer = new LevelServer(params.difficulty, allLevels)
-        const level = levelServer.nextLevel()
+        level = levelServer.nextLevel()
         gameState.set({
             levelNumber: level,
             levelData: levelsJsonData.levels[level],
@@ -71,12 +73,14 @@
     })
 </script>
 
-
-{#if loading}
-    <Loader />
-{:else}
-<Level {sprites}
-       {levelDetails}
-       on:nextlevel={onNextLevelClicked}
-       on:levelfinished={onCurrentLevelFinished} />
-{/if}
+<NavBar text={`Úloha ${level + 1}`}/>
+<main class="page-container">
+    {#if loading}
+        <Loader />
+    {:else}
+    <Level {sprites}
+           {levelDetails}
+           on:nextlevel={onNextLevelClicked}
+           on:levelfinished={onCurrentLevelFinished} />
+    {/if}
+</main>
