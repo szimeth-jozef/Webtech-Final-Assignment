@@ -1,10 +1,10 @@
 <script lang="ts">
     import type { GamePropType } from '../types/props.type'
-    import type { LevelDetails } from '../types/game.type';
+    import type { LevelDetails } from '../types/game.type'
 
     import Loader from '../components/Loader.svelte'
     import Level from '../components/Level.svelte'
-    import NavBar from '../components/NavBar.svelte';
+    import NavBar from '../components/NavBar.svelte'
 
     import { onDeviceorientationHandler } from '../lib/Controls'
     import { fetchLevels, fetchTiles, fetchSpriteSheet } from '../lib/DependencyLoaders'
@@ -21,6 +21,7 @@
     let levelServer: LevelServer
     let jsonLevelsArray: Array<any>
     let level: number
+    let navbarTitle: string
 
     Promise.all([
         fetchLevels(params.difficulty),
@@ -33,6 +34,8 @@
         const allLevels = levelsJsonData.levels.map((_: any, index: number) => index)
         levelServer = new LevelServer(params.difficulty, allLevels)
         level = levelServer.nextLevel()
+        navbarTitle = `Úloha ${level + 1}`
+        console.log(navbarTitle)
         gameState.set({
             levelNumber: level,
             levelData: levelsJsonData.levels[level],
@@ -58,6 +61,8 @@
             lvl.levelNumber = levelServer.nextLevel()
             lvl.levelData = jsonLevelsArray[lvl.levelNumber]
             lvl.isLevelLast = levelServer.isLastLevel()
+            navbarTitle = `Úloha ${lvl.levelNumber + 1}`
+            console.log(navbarTitle)
             return lvl
         })
     }
@@ -73,7 +78,7 @@
     })
 </script>
 
-<NavBar text={`Úloha ${level + 1}`}/>
+<NavBar text={navbarTitle}/>
 <main class="page-container">
     {#if loading}
         <Loader />

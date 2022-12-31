@@ -53,7 +53,7 @@
     </button>
 
     <div class="select-n-label">
-        <label for="difficulty-select"> Obtiažnosť</label>
+        <label for="difficulty-select">Obtiažnosť</label>
         <select class="select-theme" id="difficulty-select" bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
             {#each difficulties as difficulty}
                 <option value={difficulty.id}>
@@ -101,10 +101,18 @@
         min-width: 224px;
     }
 
+    select {
+        background-color: #3b3b3b;
+    }
+
     div.select-n-label {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    div.select-n-label > label {
+        text-transform: uppercase;
     }
 
     /* Tablet */

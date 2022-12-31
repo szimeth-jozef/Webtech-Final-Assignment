@@ -23,7 +23,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        background-color: #DD571C;
+        background: linear-gradient(90deg, rgba(255,44,0,1) 0%, rgba(238,60,8,1) 6%, rgba(221,87,28,1) 100%);
         height: var(--nav-bar-height);
     }
 

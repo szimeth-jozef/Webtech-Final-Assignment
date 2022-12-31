@@ -1,17 +1,22 @@
 <script lang="ts">
-    import GameControls from "./GameControls.svelte";
-    import { onDestroy, onMount } from "svelte";
-    import { createEventDispatcher } from "svelte";
-    import Ball from "../lib/Ball";
-    import { addTileMovementControls, setupControls } from "../lib/Controls";
-    import { createBoard } from "../lib/Levels";
-    import { gameState, type GameState } from "../stores/GameStore";
-    import { levelState } from "../stores/LevelStore";
-    import { MainButtonAction, mainButtonState } from "../stores/MainLevelControlButtonStore";
-    import { difficultyTranslation } from "../utils/difficulty";
-    import type Board from "../lib/Board";
-    import type SpriteSheet from "../lib/SpriteSheet";
-    import type { LevelDetails } from "../types/game.type";
+    import GameControls from "./GameControls.svelte"
+    import TileHighlighter from "./TileHighlighter.svelte"
+
+    import { onDestroy, onMount } from "svelte"
+    import { createEventDispatcher } from "svelte"
+    import Ball from "../lib/Ball"
+    import { addTileMovementControls, setupControls } from "../lib/Controls"
+    import { createBoard, type JsonLevel } from "../lib/Levels"
+    import { gameState, type GameState } from "../stores/GameStore"
+    import { levelState } from "../stores/LevelStore"
+    import { MainButtonAction, mainButtonState } from "../stores/MainLevelControlButtonStore"
+    import { difficultyTranslation } from "../utils/difficulty"
+    import { toast } from "@zerodevx/svelte-toast"
+    import type Board from "../lib/Board"
+    import type SpriteSheet from "../lib/SpriteSheet"
+    import type { LevelDetails } from "../types/game.type"
+    import { Vec2 } from "../utils/math"
+    import { tilelighter } from "../stores/TileHighlighterStore"
 
     export let levelDetails: LevelDetails
     export let sprites: SpriteSheet
@@ -22,6 +27,7 @@
     let isLevelFinished: boolean
     let isLevelLast: boolean
     let winnerMessageText: string
+    let currentLevelJsonData: JsonLevel
 
     const dispatch = createEventDispatcher()
 
@@ -32,6 +38,7 @@
         }
         level = lvl.levelNumber
         isLevelLast = lvl.isLevelLast
+        currentLevelJsonData = lvl.levelData
         winnerMessageText = lvl.isLevelLast ? "Vyhral si!" : "Hotovo!"
 
         levelState.set({
@@ -59,6 +66,51 @@
         const ballImg = sprites.getTile("ball", levelDetails.tileDimensions)
         ball = new Ball(board, gameBoardContainer, ballImg)
         setupControls(ball)
+    }
+
+    const onHintButtonClicked = () => {
+        const HIGHLIGHT_DURATION_MS = 2000
+
+        const toastOptions = {
+            duration: HIGHLIGHT_DURATION_MS,
+            theme: {
+                "--toastBarBackground": "#dd571c",
+            }
+        }
+        const solution = currentLevelJsonData.solution
+
+        for (const correctTile of solution) {
+            const tile = board.getGameBoardItem(correctTile.pos[0], correctTile.pos[1])
+            if (tile.name === correctTile.name &&
+                tile.orientation === correctTile.orientation) {
+                continue
+            }
+
+            // Show hint
+            const img = sprites.getTile(correctTile.name, 20)
+            toast.push(`
+                <div style="display:flex; align-items:center;">
+                    Správne políčko na x:${correctTile.pos[0]} y:${correctTile.pos[1]}
+                    <img style="transform: rotate(${correctTile.orientation}deg)" src="${img.src}" />
+                </div>
+            `, toastOptions)
+
+            const tilePosition = new Vec2(correctTile.pos[0], correctTile.pos[1])
+            tilePosition.multiply(tile.tileHTMLElement.width)
+
+            if (tile.isEmpty()) {
+                // Highlight with green
+                tilelighter.highlight(tilePosition, "green", HIGHLIGHT_DURATION_MS)
+            }
+            else {
+                // Highlight with red (must be a wrong tile if not empty)
+                tilelighter.highlight(tilePosition, "red", HIGHLIGHT_DURATION_MS)
+            }
+
+            return
+        }
+
+        toast.push("Máš to správne", toastOptions)
     }
 
     onMount(() => {
@@ -97,11 +149,12 @@
     <div class="top-control-panel">
         <p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]}</p>
         <div class="top-control-panel__buttons">
-            <button>Nápoveda</button>
+            <button on:click={onHintButtonClicked}>Nápoveda</button>
             <button>Riešenie</button>
         </div>
     </div>
     <div class="game-board__overlay">
+        <TileHighlighter tileDimensions={levelDetails.tileDimensions} />
         {#if isLevelFinished}
             <h1 class="game-board__message">{winnerMessageText}</h1>
         {/if}
@@ -120,7 +173,7 @@
         --game-board-grid-size: 6;  /* Set from JS */
         --game-board-grid-item-size: 60px;  /* Set from JS */
         --pick-board-grid-size: 5;  /* Fixed to 5 for now */
-        --pick-board-background-color: #dd571c;
+        --toastContainerTop: 4.5rem;
     }
 
     :global(img.draggable) {
@@ -189,7 +242,7 @@
         display: grid;
         justify-content: center;
         align-items: center;
-        background-color: var(--pick-board-background-color);
+        background: linear-gradient(90deg, rgba(255,44,0,1) 0%, rgba(238,60,8,1) 6%, rgba(221,87,28,1) 100%);
         margin: 0 auto;
         position: relative;
         transform-style: preserve-3d;

@@ -81,7 +81,7 @@ export interface JsonLevel {
     pickBoardSize:   number;
     board:           Array<JsonPlayerPickTile[]>;
     playerPickTiles: JsonPlayerPickTile[];
-    solution:        Array<JsonSolution[]>;
+    solution:        JsonSolution[];
 }
 
 export interface JsonPlayerPickTile {
@@ -98,7 +98,8 @@ export interface JsonPositions {
 }
 
 export interface JsonSolution {
-    tile:        string;
+    pos:         number[];
+    name:        string;
     orientation: number;
 }
 
