@@ -1,7 +1,7 @@
 {
     "difficulty": "hard",
     "gameBoardSize": 8,
-    "tileDimensions": 60,
+    "tileDimensions": 45,
     "levels": [
         {
             "name": "Úloha 1",
