@@ -9,7 +9,6 @@ export default class Board {
     private readonly _gameBoardPositions: Positions
     private _gameBoard: Tile[][]
     private _pickBoard: Tile[]
-    private _isInEditMode: boolean
 
 
     constructor(gameBoardSize: number, pickBoardSize: number, gameBoardPositions: Positions) {
@@ -17,7 +16,6 @@ export default class Board {
         this._pickBoardSize = pickBoardSize
         this._pickBoard = new Array(pickBoardSize)
         this._gameBoard = new Array(gameBoardSize)
-        this._isInEditMode = false
         this._gameBoardPositions = gameBoardPositions
 
         for (let i = 0; i < gameBoardSize; i++) {
@@ -35,11 +33,6 @@ export default class Board {
 
     public get pickBoardSize(): number {
         return this._pickBoardSize
-    }
-
-
-    public get isInEditMode(): boolean {
-        return this._isInEditMode
     }
 
 
@@ -136,27 +129,28 @@ export default class Board {
     }
 
 
-    public toggleTileMovementControl() {
-        this._isInEditMode = this._isInEditMode ? false : true
-
+    public enableTileMovementControl() {
         for (const gameBoardRow of this._gameBoard) {
             for (const tile of gameBoardRow) {
-                if (this._isInEditMode) {
-                    tile.disableMovementEventListeners()
-                }
-                else {
-                    tile.enableMovementEventListeners()
-                }
+                tile.enableMovementEventListeners()
             }
         }
 
         for (const tile of this._pickBoard) {
-            if (this._isInEditMode) {
+            tile.enableMovementEventListeners()
+        }
+    }
+
+
+    public disableTileMovementControl() {
+        for (const gameBoardRow of this._gameBoard) {
+            for (const tile of gameBoardRow) {
                 tile.disableMovementEventListeners()
             }
-            else {
-                tile.enableMovementEventListeners()
-            }
+        }
+
+        for (const tile of this._pickBoard) {
+            tile.disableMovementEventListeners()
         }
     }
 

@@ -4,7 +4,8 @@ export default class Tile {
     private _tile: HTMLImageElement
     private _orientation: number
     private tileProps: TileProperties
-    private eventStore: object
+    private _postponedEvents: object
+    private _postponedCssClasses: string[]
     private _name: string
     private _bondary: TileBoundary
 
@@ -18,7 +19,8 @@ export default class Tile {
         this._orientation = orientation
         this.tileProps = props
         this._tile = tile
-        this.eventStore = {}
+        this._postponedEvents = {}
+        this._postponedCssClasses = []
         this._name = name
         this._bondary = new TileBoundary(boundary, orientation)
         this.initializeTile()
@@ -50,20 +52,26 @@ export default class Tile {
 
     public disableMovementEventListeners() {
         // Save onmousedown and ontouchstart then set them to null
-        this.eventStore["onmousedown"] = this._tile.onmousedown
-        this.eventStore["ontouchstart"] = this._tile.ontouchstart
+        if (this._tile.onmousedown !== null) {
+            this._postponedEvents["onmousedown"] = this._tile.onmousedown
+            this._tile.onmousedown = null
+        }
+        if (this._tile.ontouchstart !== null) {
+            this._postponedEvents["ontouchstart"] = this._tile.ontouchstart
+            this._tile.ontouchstart = null
+        }
 
-        this._tile.onmousedown = null
-        this._tile.ontouchstart = null
-
-        // Remove css class "draggable"
-        this._tile.classList.remove("draggable")
+        // Remove css classes
+        [...this._tile.classList].forEach(cssClass => {
+            this._tile.classList.remove(cssClass)
+            this._postponedCssClasses.push(cssClass)
+        })
     }
 
     public enableMovementEventListeners() {
         // Restore saved onmousedown and ontouchstart
-        const onMouseDownEvent = this.eventStore["onmousedown"]
-        const onTouchStartEvent = this.eventStore["ontouchstart"]
+        const onMouseDownEvent = this._postponedEvents["onmousedown"]
+        const onTouchStartEvent = this._postponedEvents["ontouchstart"]
 
         if (onMouseDownEvent) {
             this._tile.onmousedown = onMouseDownEvent
@@ -73,19 +81,11 @@ export default class Tile {
             this._tile.ontouchstart = onTouchStartEvent
         }
 
-        // Add back css class "draggable"
-        this._tile.classList.add("draggable")
+        // Add back css classes
+        this._tile.classList.add(...this._postponedCssClasses)
+        this._postponedCssClasses = []
     }
 
-    // public rotate(byDeg: number) {
-    //     if (!this.tileProps.rotable) {
-    //         console.warn(`An attempt to rotate a non-rotable tile [${this.name}]`)
-    //         console.trace()
-    //         return
-    //     }
-    //     this.orientation += byDeg
-    //     this.tile.style.transform = `rotate(${this.orientation}deg)`
-    // }
 
     private initializeTile() {
         this._tile.style.transform = `rotate(${this._orientation}deg)`
@@ -97,12 +97,6 @@ export default class Tile {
         if (this.tileProps.receiver) {
             this._tile.classList.add("dropzone")
         }
-
-        // if (this.tileProps.rotable) {
-        //     this.tile.addEventListener("click", event => {
-        //         this.rotate(90)
-        //     })
-        // }
 
         // Remove img default drag event
         this._tile.ondragstart = () => false

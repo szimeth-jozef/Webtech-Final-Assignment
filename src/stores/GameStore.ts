@@ -1,9 +1,10 @@
 import { writable } from "svelte/store"
 import type { JsonLevel } from "../lib/Levels"
 
-export interface GameLevel {
-    number: number,
-    data: JsonLevel
+export interface GameState {
+    levelNumber: number,
+    levelData: JsonLevel,
+    isLevelLast: boolean
 }
 
-export const currentLevel = writable<GameLevel>()
+export const gameState = writable<GameState>()
