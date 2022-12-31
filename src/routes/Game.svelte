@@ -84,3 +84,15 @@
            on:levelfinished={onCurrentLevelFinished} />
     {/if}
 </main>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - var(--nav-bar-height));
+        user-select: none;
+        -webkit-user-select: none;
+    }
+</style>

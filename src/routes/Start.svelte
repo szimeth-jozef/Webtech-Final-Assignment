@@ -44,7 +44,7 @@
 
 <main class="page-container">
     <h1>Puzzle Path</h1>
-    <button class="learn-more" on:click={onStartGameButtonClicked}>
+    <button class="button-theme" on:click={onStartGameButtonClicked}>
         {#if isDataCached}
             Pokračovať v hre
         {:else}
@@ -52,9 +52,9 @@
         {/if}
     </button>
 
-    <div class="selectDiv">
+    <div class="select-n-label">
         <label for="difficulty-select"> Obtiažnosť</label>
-        <select id="difficulty-select" bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
+        <select class="select-theme" id="difficulty-select" bind:value={selectedDifficulty} on:change={onDifficultySelectChange}>
             {#each difficulties as difficulty}
                 <option value={difficulty.id}>
                     {difficulty.text}
@@ -63,7 +63,7 @@
         </select>
     </div>
 
-<button class="learn-more" on:click={() => push("/description")}>Popis hry</button>
+<button class="button-theme" on:click={() => push("/description")}>Popis hry</button>
 </main>
 
 
@@ -74,21 +74,24 @@
         align-items: center;
         justify-content: center;
         min-height: 100vh;
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     h1 {
-        font-size: 3em;
+        font-size: 3rem;
+        padding: 3rem 0;
         line-height: 1.1;
         font-family: 'Press Start 2P', cursive;
         text-align: center;
     }
 
-    button {
+    button,
+    select {
         position: relative;
         display: inline-block;
         cursor: pointer;
         outline: none;
-        border: 0;
         vertical-align: middle;
         text-decoration: none;
         font-size: inherit;
@@ -98,47 +101,10 @@
         min-width: 224px;
     }
 
-    button.learn-more {
-        font-weight: 600;
-        color: white;
-        text-transform: uppercase;
-        padding: 1.25em 2em;
-        background: #DD571C;
-        border: 2px solid white;
-        border-radius: 0.75em;
-        transform-style: preserve-3d;
-        transition: transform 100ms cubic-bezier(0, 0, 0.58, 1),
-                    background 100ms cubic-bezier(0, 0, 0.58, 1);
-    }
-
-    button.learn-more::before {
-        position: absolute;
-        content: "";
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: #903812;
-        border-radius: inherit;
-        transform: translate3d(0, 0.75em, -1em);
-        transition: transform 100ms cubic-bezier(0, 0, 0.58, 1);
-    }
-
-    button.learn-more:hover {
-        background: #ff8220;
-        transform: translate(0, 0.25em);
-    }
-    button.learn-more:hover::before {
-        transform: translate3d(0, 0.5em, -1em);
-    }
-    button.learn-more:active {
-        background: #ff8220;
-        transform: translate(0em, 0.75em);
-    }
-    button.learn-more:active::before {
-        transform: translate3d(0, 0, -1em);
+    div.select-n-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     /* Tablet */

@@ -63,33 +63,48 @@
 
 <div class="controls-container">
     {#if showMainControls}
-        <button on:click={onMainButtonClicked} disabled={$mainButtonState.isDisabled}>
+        <button class="button-theme" on:click={onMainButtonClicked} disabled={$mainButtonState.isDisabled}>
             {mainButtonText}
         </button>
     {:else}
-        <button on:click={onBackToMenuClicked}>
-            {buttonTranslations.backToMenuButton}
-        </button>
-        <button on:click={() => dispatch("nextlevel")}>
-            {#if isLevelLast}
-                {buttonTranslations.nextLevelButton.difficultyFinished}
-            {:else}
-                {buttonTranslations.nextLevelButton.levelFinished}
-            {/if}
-        </button>
+        <div class="buttons-multiple">
+            <button class="button-theme" on:click={onBackToMenuClicked}>
+                {buttonTranslations.backToMenuButton}
+            </button>
+            <button class="button-theme" on:click={() => dispatch("nextlevel")}>
+                {#if isLevelLast}
+                    {buttonTranslations.nextLevelButton.difficultyFinished}
+                {:else}
+                    {buttonTranslations.nextLevelButton.levelFinished}
+                {/if}
+            </button>
+        </div>
     {/if}
 </div>
 
 <style>
     div.controls-container {
-        height: 4rem;
+        height: 5rem;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    div.controls-container > button {
-        height: 2rem;
-        margin: 1rem;
+    div.controls-container > button,
+    div.buttons-multiple > button {
+        padding: 0.65rem 0.5rem;
+        cursor: pointer;
+        margin-bottom: 0.5rem;
+    }
+
+    div.buttons-multiple {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+    }
+
+    div.buttons-multiple > button{
+        padding: 0.65rem 0.25rem;
     }
 </style>

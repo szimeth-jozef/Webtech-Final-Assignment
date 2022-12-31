@@ -93,22 +93,25 @@
     })
 </script>
 
-
-<div id="top-control-panel">
-    <p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]}</p>
-    <button class="game-button__secondary">Nápoveda</button>
-    <button class="game-button__secondary">Riešenie</button>
-</div>
-<div class="game-board__overlay">
-    {#if isLevelFinished}
-        <h1 class="game-board__message">{winnerMessageText}</h1>
-    {/if}
-    <div class="game-board">
+<div class="level-container">
+    <div class="top-control-panel">
+        <p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]}</p>
+        <div class="top-control-panel__buttons">
+            <button>Nápoveda</button>
+            <button>Riešenie</button>
+        </div>
     </div>
-</div>
-<GameControls {isLevelLast} on:nextlevel />
-<div class="pick-board-background">
-    <div class="pick-board"></div>
+    <div class="game-board__overlay">
+        {#if isLevelFinished}
+            <h1 class="game-board__message">{winnerMessageText}</h1>
+        {/if}
+        <div class="game-board">
+        </div>
+    </div>
+    <GameControls {isLevelLast} on:nextlevel />
+    <div class="pick-board-background">
+        <div class="pick-board"></div>
+    </div>
 </div>
 
 
@@ -130,23 +133,36 @@
         transition: 0.25s filter ease;
     }
 
-    p {
-        margin: 0;
-        padding: 1rem 0;
+    div.level-container {
+        max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
     }
 
-    #top-control-panel {
+    div.top-control-panel {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: flex-end;
         margin-bottom: 1rem;
+    }
+
+    div.top-control-panel > p {
+        text-transform: uppercase;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    div.top-control-panel__buttons {
+        display: flex;
+    }
+
+    div.top-control-panel__buttons > button {
+        margin-left: 1rem;
+        padding: 0.25rem 0.5rem;
     }
 
     div.game-board {
         position: relative;
         display: grid;
         grid-template-columns: repeat(var(--game-board-grid-size), 1fr);
-        max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
-        margin: 0 auto;
     }
 
     div.game-board__overlay {
@@ -174,22 +190,29 @@
         justify-content: center;
         align-items: center;
         background-color: var(--pick-board-background-color);
-        max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
+        margin: 0 auto;
+        position: relative;
+        transform-style: preserve-3d;
+    }
+
+    div.pick-board-background::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #903812;
+        transform: translate3d(0, 0.75em, -1em);
     }
 
     div.pick-board {
         display: grid;
         grid-template-columns: repeat(var(--pick-board-grid-size), 1fr);
-        /* max-width: calc(
-            var(--pick-board-grid-size) * var(--game-board-grid-item-size) +
-            calc(var(--pick-board-grid-size) - 1) * 0.5rem
-        ); */
         margin: 0 auto;
         gap: 0.5rem;
         padding: 14px 0;
-    }
-
-    .game-button__secondary {
-        margin: 0 5px;
     }
 </style>
