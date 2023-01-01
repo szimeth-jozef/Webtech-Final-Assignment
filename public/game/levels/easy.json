@@ -105,7 +105,11 @@
                     "name": "corner",
                     "orientation": 180
                 }
-            ]
+            ],
+            "solutionDescription": {
+                "desktop": "Vyber správne políčka a pretiahni ich na správne miesta držaním tlačítka a ťahaním mišky. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou šípiek na klavesnici treba odkotúlať loptičku do cieľa. Tým bude úloha dokončená.",
+                "mobile": "Vyber správne políčka a pretiahni ich na správne miesta mačknutím a ťahaním po displeji. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou orientácie zariadenia t.j. pohybom do strán odkotúlaj loptičku do cieľa. (DISCLAIMER: na niektorých zariadeniach event \"deviceorientation\" nie je povolený/dostupný, preto prosím ak je možné, použite iné zariadenie, ktoré daný event podporuje). Tým bude úloha dokončená."
+            }
         },
         {
             "name": "Úloha 2",
@@ -197,7 +201,11 @@
                     "name": "corner",
                     "orientation": 0
                 }
-            ]
+            ],
+            "solutionDescription": {
+                "desktop": "Vyber správne políčka a pretiahni ich na správne miesta držaním tlačítka a ťahaním mišky. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou šípiek na klavesnici treba odkotúlať loptičku do cieľa. Tým bude úloha dokončená.",
+                "mobile": "Vyber správne políčka a pretiahni ich na správne miesta mačknutím a ťahaním po displeji. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou orientácie zariadenia t.j. pohybom do strán odkotúlaj loptičku do cieľa. (DISCLAIMER: na niektorých zariadeniach event \"deviceorientation\" nie je povolený/dostupný, preto prosím ak je možné, použite iné zariadenie, ktoré daný event podporuje). Tým bude úloha dokončená."
+            }
         },
         {
             "name": "Úloha 3",
@@ -284,7 +292,11 @@
                     "name": "straight",
                     "orientation": 90
                 }
-            ]
+            ],
+            "solutionDescription": {
+                "desktop": "Vyber správne políčka a pretiahni ich na správne miesta držaním tlačítka a ťahaním mišky. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou šípiek na klavesnici treba odkotúlať loptičku do cieľa. Tým bude úloha dokončená.",
+                "mobile": "Vyber správne políčka a pretiahni ich na správne miesta mačknutím a ťahaním po displeji. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou orientácie zariadenia t.j. pohybom do strán odkotúlaj loptičku do cieľa. (DISCLAIMER: na niektorých zariadeniach event \"deviceorientation\" nie je povolený/dostupný, preto prosím ak je možné, použite iné zariadenie, ktoré daný event podporuje). Tým bude úloha dokončená."
+            }
         },
         {
             "name": "Úloha 4",
@@ -382,7 +394,11 @@
                     "name": "corner",
                     "orientation": 270
                 }
-            ]
+            ],
+            "solutionDescription": {
+                "desktop": "Vyber správne políčka a pretiahni ich na správne miesta držaním tlačítka a ťahaním mišky. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou šípiek na klavesnici treba odkotúlať loptičku do cieľa. Tým bude úloha dokončená.",
+                "mobile": "Vyber správne políčka a pretiahni ich na správne miesta mačknutím a ťahaním po displeji. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou orientácie zariadenia t.j. pohybom do strán odkotúlaj loptičku do cieľa. (DISCLAIMER: na niektorých zariadeniach event \"deviceorientation\" nie je povolený/dostupný, preto prosím ak je možné, použite iné zariadenie, ktoré daný event podporuje). Tým bude úloha dokončená."
+            }
         },
         {
             "name": "Úloha 5",
@@ -474,7 +490,11 @@
                     "name": "corner",
                     "orientation": 90
                 }
-            ]
+            ],
+            "solutionDescription": {
+                "desktop": "Vyber správne políčka a pretiahni ich na správne miesta držaním tlačítka a ťahaním mišky. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou šípiek na klavesnici treba odkotúlať loptičku do cieľa. Tým bude úloha dokončená.",
+                "mobile": "Vyber správne políčka a pretiahni ich na správne miesta mačknutím a ťahaním po displeji. Ak trasa bude hotová aktivuje sa tlačítko \"POLOŽIŤ LOPTIČKU\" a pomocou orientácie zariadenia t.j. pohybom do strán odkotúlaj loptičku do cieľa. (DISCLAIMER: na niektorých zariadeniach event \"deviceorientation\" nie je povolený/dostupný, preto prosím ak je možné, použite iné zariadenie, ktoré daný event podporuje). Tým bude úloha dokončená."
+            }
         }
     ]
 }

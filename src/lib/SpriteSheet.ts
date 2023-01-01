@@ -53,6 +53,33 @@ export default class SpriteSheet {
         return image
     }
 
+    public getOrientedBuffer(name: string, size: number, orientation: number): HTMLCanvasElement {
+        const tile = this.tiles.get(name)
+        if (!tile) {
+            return null
+        }
+
+        const buffer = document.createElement("canvas")
+        buffer.width = size
+        buffer.height = size
+
+        const degToRad = (deg: number) => deg * Math.PI / 180
+
+        const ctx = buffer.getContext("2d")
+        ctx.translate(size/2, size/2)
+        ctx.rotate(degToRad(orientation))
+        ctx.translate(-size/2, -size/2)
+        ctx.drawImage(tile, 0, 0, this.width, this.height, 0, 0, size, size)
+
+        return buffer
+    }
+
+    public getOrientedTile(name: string, size: number, orientation: number): HTMLImageElement {
+        const img = this.getTile(name, size)
+        img.style.transform = `rotate(${orientation}deg)`
+        return img
+    }
+
     public getBoundaries(name: string) {
         return this.boundaries.get(name)
     }
