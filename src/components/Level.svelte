@@ -6,7 +6,7 @@
     import { createEventDispatcher } from "svelte"
     import Ball from "../lib/Ball"
     import { addTileMovementControls, setupControls } from "../lib/Controls"
-    import { createBoard, type JsonLevel } from "../lib/Levels"
+    import { createBoard, renderSolutionBoardImage, type JsonLevel } from "../lib/Levels"
     import { gameState, type GameState } from "../stores/GameStore"
     import { levelState } from "../stores/LevelStore"
     import { MainButtonAction, mainButtonState } from "../stores/MainLevelControlButtonStore"
@@ -17,6 +17,8 @@
     import type { LevelDetails } from "../types/game.type"
     import { Vec2 } from "../utils/math"
     import { tilelighter } from "../stores/TileHighlighterStore"
+    import PrintableDialog from "./PrintableDialog.svelte";
+    import isMobile from "is-mobile";
 
     export let levelDetails: LevelDetails
     export let sprites: SpriteSheet
@@ -27,7 +29,10 @@
     let isLevelFinished: boolean
     let isLevelLast: boolean
     let winnerMessageText: string
+    let solutionDescriptionText: string
+    let solutionDescriptionImg: string
     let currentLevelJsonData: JsonLevel
+    let dialog
 
     const dispatch = createEventDispatcher()
 
@@ -40,6 +45,11 @@
         isLevelLast = lvl.isLevelLast
         currentLevelJsonData = lvl.levelData
         winnerMessageText = lvl.isLevelLast ? "Vyhral si!" : "Hotovo!"
+        solutionDescriptionText = isMobile() ?
+            currentLevelJsonData.solutionDescription.mobile :
+            currentLevelJsonData.solutionDescription.desktop
+
+        solutionDescriptionImg = renderSolutionBoardImage(currentLevelJsonData, sprites, levelDetails.tileDimensions)
 
         levelState.set({
             isFinished: false,
@@ -52,7 +62,6 @@
 
         const gameBoardContainer: HTMLDivElement = document.querySelector(".game-board")
         const pickBoardContainer: HTMLDivElement = document.querySelector(".pick-board")
-        const solutionContainer: HTMLDivElement = document.querySelector(".solutionContainer")
 
         // Clear game board
         gameBoardContainer.innerHTML = ""
@@ -63,16 +72,6 @@
 
         board.populateGameBoardContainer(gameBoardContainer)
         board.populatePickBoardContainer(pickBoardContainer)
-        solutionContainer.innerHTML = gameBoardContainer.innerHTML
-
-        for (let x=0;x<lvl.levelData.solution.length;x++){
-            let pos=lvl.levelData.solution[x].pos[0]+(lvl.levelData.solution[x].pos[1]*board.gameBoardSize)
-            let children=solutionContainer.children[pos]
-            const img = sprites.getTile(lvl.levelData.solution[x].name, levelDetails.tileDimensions)
-            children.setAttribute("src",img.getAttribute("src"))
-            children.style.transform="rotate("+lvl.levelData.solution[x].orientation+"deg)";
-        }
-
 
         const ballImg = sprites.getTile("ball", levelDetails.tileDimensions)
         ball = new Ball(board, gameBoardContainer, ballImg)
@@ -150,22 +149,19 @@
         root.style.setProperty("--game-board-grid-size", levelDetails.gameBoardSize.toString())
         root.style.setProperty("--game-board-grid-item-size", `${levelDetails.tileDimensions}px`)
     })
-    	function showSolution(){
-        const dialog = document.getElementById("dialog");
-        dialog.showModal();
-    }
 
     onDestroy(() => {
         console.log("LevelComponent: Destroyed")
     })
 </script>
 
+
 <div class="level-container">
     <div class="top-control-panel">
         <p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]}</p>
         <div class="top-control-panel__buttons">
             <button on:click={onHintButtonClicked}>Nápoveda</button>
-            <button on:click={showSolution}>Riešenie</button>
+            <button on:click={() => dialog.open()}>Riešenie</button>
         </div>
     </div>
     <div class="game-board__overlay">
@@ -181,6 +177,10 @@
         <div class="pick-board"></div>
     </div>
 </div>
+<PrintableDialog bind:this={dialog}>
+    <p class="solution-description">{solutionDescriptionText}</p>
+    <img class="solution-img" src={solutionDescriptionImg} alt="solution_img">
+</PrintableDialog>
 
 
 <style>
@@ -189,6 +189,18 @@
         --game-board-grid-item-size: 60px;  /* Set from JS */
         --pick-board-grid-size: 5;  /* Fixed to 5 for now */
         --toastContainerTop: 4.5rem;
+    }
+
+    p.solution-description {
+        padding: 10px;
+        hyphens: auto;
+        text-align: justify;
+    }
+
+    img.solution-img {
+        padding: 10px;
+        max-width: 360px;
+        margin: 0 auto;
     }
 
     :global(img.draggable) {
@@ -203,13 +215,14 @@
 
     div.level-container {
         max-width: calc(var(--game-board-grid-size) * var(--game-board-grid-item-size));
+        padding-bottom: 12px;
     }
 
     div.top-control-panel {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-bottom: 1rem;
+        margin: 0.65rem 0;
     }
 
     div.top-control-panel > p {
@@ -282,5 +295,25 @@
         margin: 0 auto;
         gap: 0.5rem;
         padding: 14px 0;
+    }
+
+    /* Tablet */
+    @media screen and (max-width: 768px) {
+        p.solution-description {
+            font-size: 0.9rem;
+        }
+    }
+
+    /* Mobile devices */
+    @media screen and (max-width: 480px) {
+        p.solution-description {
+            font-size: 0.75rem;
+        }
+    }
+
+    @media print {
+        div.level-container {
+            visibility: hidden !important;
+        }
     }
 </style>

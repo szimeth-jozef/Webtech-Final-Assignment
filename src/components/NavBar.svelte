@@ -9,7 +9,7 @@
     <span class="back-button" on:click={() => push("/")}>
         <i class="arrow-back"></i>
     </span>
-    <h1>{text}</h1>
+    <h1 class="navbar-title">{text}</h1>
 </header>
 <div class="fixed-navbar-bumber"></div>
 
@@ -104,11 +104,7 @@
 
     @media print {
         header {
-            display: none;
-        }
-
-        div {
-            display: none;
+            z-index: 99;
         }
     }
 </style>

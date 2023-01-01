@@ -343,7 +343,7 @@ function swapTilesAction(targeted: Element, dragged: Element, board: Board) {
 
     // 4. Update board data structure (swap Tile's)
     board.replaceTiles(targetId, draggedId)
-    board.printBoardState()
+    // board.printBoardState()
 
     // 5. Check if every empty tile is filled and if true enable roll button
     mainButtonState.update(state => {

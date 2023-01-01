@@ -104,7 +104,6 @@ export default class Tile {
 }
 
 export interface TileProperties {
-    rotable: boolean,
     movable: boolean,
     receiver: boolean
 }
