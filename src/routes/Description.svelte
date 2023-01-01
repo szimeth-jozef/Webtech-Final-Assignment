@@ -1,10 +1,10 @@
 <script lang="ts">
-    import arrowsImage from '../assets/arrows.png'
-    import sensorImage from '../assets/mobile_sensor.png'
-    import NavBar from '../components/NavBar.svelte';
-    import { isMobileBrowser } from '../utils/platform';
+    import arrowsImage from "../assets/arrows.png"
+    import sensorImage from "../assets/mobile_sensor.png"
+    import NavBar from "../components/NavBar.svelte"
+    import isMobile from "is-mobile"
 
-    const showMobileContent = isMobileBrowser()
+    const showMobileContent = isMobile()
 </script>
 
 

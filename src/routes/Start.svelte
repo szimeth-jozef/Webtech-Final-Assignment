@@ -1,9 +1,10 @@
 <script lang="ts">
-    import { push } from 'svelte-spa-router'
-    import CacheHandler from '../lib/CacheHandler';
-    import type { Difficulty } from '../types/game.type';
-    import { difficulties } from '../utils/difficulty';
-    import { isMobileBrowser } from '../utils/platform'
+    import { push } from "svelte-spa-router"
+    import CacheHandler from "../lib/CacheHandler"
+    import type { Difficulty } from "../types/game.type"
+    import { difficulties } from "../utils/difficulty"
+    import isMobile from "is-mobile"
+    import { toast } from "@zerodevx/svelte-toast"
 
 
     let selectedDifficulty: Difficulty = "easy"
@@ -12,22 +13,31 @@
     const cacheHandler = new CacheHandler(selectedDifficulty)
     isDataCached = cacheHandler.readCache()
 
-    async function lockScreenToPortrait() {
+    async function lockFullscreenToPortrait() {
         if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen()
+            await document.documentElement.requestFullscreen()
         }
         return await screen.orientation.lock("portrait")
     }
 
     function onStartGameButtonClicked() {
-        if (isMobileBrowser()) {
-            lockScreenToPortrait()
+        const toastOptions = {
+            duration: 5000,
+            theme: {
+                "--toastBarBackground": "#dd571c",
+            }
+        }
+
+        if (isMobile()) {
+            lockFullscreenToPortrait()
                 .then(() => {
                     console.log("Screen locked to portrait.")
                     push(`/game/${selectedDifficulty}`)
                 })
                 .catch(err => {
                     console.error(`Failed locking the screen to portrait: ${err}`)
+                    toast.push("Nepodarilo sa uzamknúť obrazovku na výšku! S loptičkou sa bude otáčať obrazovka.", toastOptions)
+                    push(`/game/${selectedDifficulty}`)
                 })
         }
         else {

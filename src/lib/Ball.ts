@@ -58,7 +58,7 @@ export default class Ball {
         const newPos = Vec2.addVecs(this._position, dir)
         if (newPos.x < 0 || newPos.x > boardWidth ||
             newPos.y < 0 || newPos.y > boardWidth) {
-            console.log(`Cannot go ${direction}, out of board`)
+            // Cannot go out of the board
             return
         }
 
@@ -68,7 +68,7 @@ export default class Ball {
         const currentTile = this._board.getGameBoardItem(currentIndexPos.x, currentIndexPos.y)
         const currentTileBoundary = currentTile.boundary.getBoundaryByDirection(direction)
         if (!currentTileBoundary) {
-            console.log(`Current tile's ${direction} is blocked`)
+            // Current tile's side is blocked
             return
         }
         
@@ -77,7 +77,7 @@ export default class Ball {
         const nextTile = this._board.getGameBoardItem(nextIndexPos.x, nextIndexPos.y)
         const nextTileBondary = nextTile.boundary.getBoundaryByDirection(reverseDirection(direction))
         if (!nextTileBondary) {
-            console.log(`Next tile's ${direction} is blocked`)
+            // Next tile's side is blocked
             return
         }
 

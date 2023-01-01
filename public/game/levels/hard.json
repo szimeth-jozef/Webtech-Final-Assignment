@@ -304,7 +304,53 @@
                 { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false }
             ],
-            "solution": []
+            "solution": [
+                {
+                    "pos": [0, 7],
+                    "name": "corner",
+                    "orientation": 270
+                },
+                {
+                    "pos": [3, 6],
+                    "name": "corner",
+                    "orientation": 0
+                },
+                {
+                    "pos": [6, 5],
+                    "name": "corner",
+                    "orientation": 90
+                },
+                {
+                    "pos": [4, 5],
+                    "name": "straight",
+                    "orientation": 90
+                },
+                {
+                    "pos": [2, 2],
+                    "name": "corner",
+                    "orientation": 0
+                },
+                {
+                    "pos": [4, 3],
+                    "name": "corner",
+                    "orientation": 270
+                },
+                {
+                    "pos": [6, 2],
+                    "name": "straight",
+                    "orientation": 0
+                },
+                {
+                    "pos": [4, 1],
+                    "name": "straight",
+                    "orientation": 90
+                },
+                {
+                    "pos": [1, 1],
+                    "name": "corner",
+                    "orientation": 270
+                }
+            ]
         },
         {
             "name": "Úloha 4",

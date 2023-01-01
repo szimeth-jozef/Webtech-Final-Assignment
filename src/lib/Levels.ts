@@ -13,8 +13,6 @@ export function createBoard(levelData: JsonLevel, sprites: SpriteSheet, gameBoar
 
     const board = new Board(gameBoardSize, pickBoardSize, positions)
 
-    board.printBoardState()
-
     for (let i = 0; i < gameBoardSize; i++) {
         for (let j = 0; j < gameBoardSize; j++) {
             const jsonTile = levelData.board[i][j]
@@ -60,9 +58,6 @@ export function createBoard(levelData: JsonLevel, sprites: SpriteSheet, gameBoar
         )
         board.setPickBoardItem(tile, i)
     }
-
-    board.printBoardState()
-    board.printBoundaryMap()
 
     return board
 }

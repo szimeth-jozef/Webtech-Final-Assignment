@@ -35,7 +35,7 @@
         levelServer = new LevelServer(params.difficulty, allLevels)
         level = levelServer.nextLevel()
         navbarTitle = `Úloha ${level + 1}`
-        console.log(navbarTitle)
+
         gameState.set({
             levelNumber: level,
             levelData: levelsJsonData.levels[level],
@@ -62,7 +62,7 @@
             lvl.levelData = jsonLevelsArray[lvl.levelNumber]
             lvl.isLevelLast = levelServer.isLastLevel()
             navbarTitle = `Úloha ${lvl.levelNumber + 1}`
-            console.log(navbarTitle)
+
             return lvl
         })
     }

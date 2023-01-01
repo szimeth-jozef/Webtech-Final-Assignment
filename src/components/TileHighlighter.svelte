@@ -17,7 +17,8 @@
         .join(";")
 
     tilelighter.subscribe((state) => {
-        if (!state) {
+        const highlighter = document.querySelector("div.highlighter")
+        if (!(state && highlighter)) {
             return
         }
 
@@ -25,7 +26,6 @@
             clearTimeout(currentTimeoutId)
         }
 
-        const highlighter = document.querySelector("div.highlighter")
         styles["left-pos"] = state.position.x + "px"
         styles["top-pos"] = state.position.y + "px"
         styles["highlight-color"] = state.color
