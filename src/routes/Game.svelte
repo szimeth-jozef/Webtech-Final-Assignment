@@ -79,6 +79,17 @@
 </script>
 
 <NavBar text={navbarTitle}/>
+
+<dialog id="dialog">
+    <form method="dialog">
+        <div class="head">
+            <span>Riešenie</span>
+            <button class="close">&times;</button>
+            <div class="solutionContainer"></div>
+        </div>
+    </form>
+</dialog>
+
 <main class="page-container">
     {#if loading}
         <Loader />
@@ -99,5 +110,20 @@
         min-height: calc(100vh - var(--nav-bar-height));
         user-select: none;
         -webkit-user-select: none;
+    }
+    .head *{
+        font-size: xx-large;
+    }
+    .close{
+        float: right;
+    }
+    dialog{
+        margin: auto;
+        background: #242424;
+    }
+    div.solutionContainer{
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(var(--game-board-grid-size), 1fr);
     }
 </style>

@@ -52,6 +52,7 @@
 
         const gameBoardContainer: HTMLDivElement = document.querySelector(".game-board")
         const pickBoardContainer: HTMLDivElement = document.querySelector(".pick-board")
+        const solutionContainer: HTMLDivElement = document.querySelector(".solutionContainer")
 
         // Clear game board
         gameBoardContainer.innerHTML = ""
@@ -62,6 +63,16 @@
 
         board.populateGameBoardContainer(gameBoardContainer)
         board.populatePickBoardContainer(pickBoardContainer)
+        solutionContainer.innerHTML = gameBoardContainer.innerHTML
+
+        for (let x=0;x<lvl.levelData.solution.length;x++){
+            let pos=lvl.levelData.solution[x].pos[0]+(lvl.levelData.solution[x].pos[1]*board.gameBoardSize)
+            let children=solutionContainer.children[pos]
+            const img = sprites.getTile(lvl.levelData.solution[x].name, levelDetails.tileDimensions)
+            children.setAttribute("src",img.getAttribute("src"))
+            children.style.transform="rotate("+lvl.levelData.solution[x].orientation+"deg)";
+        }
+
 
         const ballImg = sprites.getTile("ball", levelDetails.tileDimensions)
         ball = new Ball(board, gameBoardContainer, ballImg)
@@ -139,6 +150,10 @@
         root.style.setProperty("--game-board-grid-size", levelDetails.gameBoardSize.toString())
         root.style.setProperty("--game-board-grid-item-size", `${levelDetails.tileDimensions}px`)
     })
+    	function showSolution(){
+        const dialog = document.getElementById("dialog");
+        dialog.showModal();
+    }
 
     onDestroy(() => {
         console.log("LevelComponent: Destroyed")
@@ -150,7 +165,7 @@
         <p>Obtiažnosť: {difficultyTranslation[levelDetails.difficulty]}</p>
         <div class="top-control-panel__buttons">
             <button on:click={onHintButtonClicked}>Nápoveda</button>
-            <button>Riešenie</button>
+            <button on:click={showSolution}>Riešenie</button>
         </div>
     </div>
     <div class="game-board__overlay">
