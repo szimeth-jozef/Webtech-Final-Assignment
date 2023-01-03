@@ -93,13 +93,13 @@
                 ]
             ],
             "playerPickTiles": [
-                { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false }
+                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false }
             ],
             "solution": [
                 {"pos":[0,5],"name": "straight","orientation":0},
@@ -205,14 +205,14 @@
                 ]
             ],
             "playerPickTiles": [
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false }
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false }
             ],
             "solution": [
                 {"pos":[0,2],"name": "corner","orientation":270},
@@ -320,13 +320,13 @@
             ],
             "playerPickTiles": [
                 { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false }
             ],
             "solution": [
@@ -471,15 +471,15 @@
                 ]
             ],
             "playerPickTiles": [
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false }
+                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false }
             ],
             "solution": [
                 {"pos":[5,1],"name": "corner","orientation":0},
@@ -588,15 +588,15 @@
                 ]
             ],
             "playerPickTiles": [
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
-                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "straight", "orientation": 0, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 270, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "straight", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 90, "rotable": true, "movable": true, "receiver": false },
+                { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false },
                 { "tile": "corner", "orientation": 180, "rotable": true, "movable": true, "receiver": false }
             ],
             "solution": [
